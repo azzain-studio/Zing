@@ -185,23 +185,25 @@ button{font-family:inherit;color:inherit}svg{display:block}
 /* ===== MODE HP ===== */
 body[data-mode="hp"] .top{padding:10px 14px}
 body[data-mode="hp"] .brand .wordmark{font-size:18px}
-body[data-mode="hp"] .home-main{width:100%;max-width:640px;padding:14px 12px 24px}
-body[data-mode="hp"] .hello{margin-bottom:14px}
+body[data-mode="hp"] .home-main{width:100%;max-width:600px;padding:14px 12px 24px}
+body[data-mode="hp"] .hello{margin-bottom:12px}
 body[data-mode="hp"] .hello h1{font-size:21px}
 body[data-mode="hp"] .clock-chip{display:none}
-body[data-mode="hp"] .section-head{margin:16px 0 10px}
+body[data-mode="hp"] .section-head{margin:14px 0 10px}
 body[data-mode="hp"] .grid-games{grid-template-columns:repeat(2,1fr);gap:12px}
 body[data-mode="hp"] .gcard{border-radius:16px}
-body[data-mode="hp"] .gc-info{padding:8px 8px 4px;gap:3px;align-items:center}
-body[data-mode="hp"] .gc-info h4{font-size:13.5px;text-align:center;width:100%}
+body[data-mode="hp"] .gc-art{aspect-ratio:1/1}
+body[data-mode="hp"] .gc-info{padding:10px 10px 12px;gap:6px;align-items:center}
+body[data-mode="hp"] .gc-info h4{font-size:13px;text-align:center;width:100%}
 body[data-mode="hp"] .gc-info p,body[data-mode="hp"] .gc-tag,body[data-mode="hp"] .gc-meta{display:none}
-body[data-mode="hp"] .gc-actions{margin-top:0;padding:2px 4px 8px;justify-content:center;gap:5px;flex-wrap:nowrap}
-body[data-mode="hp"] .gc-act{padding:5px 10px;font-size:11px}
-body[data-mode="hp"] .gc-act svg{width:12px;height:12px}
+body[data-mode="hp"] .gc-actions{margin-top:0;padding:0 4px 4px;justify-content:center;gap:4px;flex-wrap:nowrap}
+body[data-mode="hp"] .gc-act{padding:6px 9px;font-size:0;gap:0;border-radius:12px}
+body[data-mode="hp"] .gc-act svg{width:15px;height:15px;margin:0}
+body[data-mode="hp"] .gc-act .n{display:none}
 body[data-mode="hp"] .gcard.upload{min-height:0;aspect-ratio:1/1;padding:10px;gap:8px}
 body[data-mode="hp"] .gcard.upload h4{font-size:12.5px}
 body[data-mode="hp"] .gcard.upload p{display:none}
-body[data-mode="hp"] .up-plus{width:38px;height:38px}
+body[data-mode="hp"] .up-plus{width:36px;height:36px}
 body[data-mode="hp"] .home-foot,body[data-mode="hp"] .chat-fab{display:none}
 body[data-mode="hp"][data-screen="screen-home"] .bottom-nav,
 body[data-mode="hp"][data-screen="screen-chat"] .bottom-nav,
@@ -923,49 +925,44 @@ function loadAdminForm(){
   }catch(e){toast('Gagal simpan: '+(e.code||e.message),'err')}
 };
 
-/* ===== ZING AI — dua backend: function /ai + fallback Pollinations (tanpa key) ===== */
-async function primaryChat(messages){
-  const r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'chat',messages})});
-  let j=null;try{j=await r.json()}catch(e){}
-  if(!r.ok)throw new Error(j?.error||('HTTP '+r.status));
-  const c=j?.choices?.[0]?.message?.content;
-  if(!c)throw new Error('Respons kosong');
-  return c;
-}
-async function fallbackChat(messages){
-  const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages})});
-  if(!r.ok)throw new Error('HTTP '+r.status);
-  const j=await r.json().catch(()=>null);
-  const c=j?.choices?.[0]?.message?.content;
-  if(!c)throw new Error('Respons kosong');
-  return c;
-}
+/* ===== ZING AI — jalur utama /ai (env key) + cadangan Pollinations ===== */
 async function callAI(messages){
-  let pErr;
-  try{return await primaryChat(messages)}catch(e){pErr=e}
-  try{return await fallbackChat(messages)}
-  catch(e2){throw new Error('Server utama ('+pErr.message+') dan cadangan ('+e2.message+') sama-sama gagal.')}
+  try{
+    const r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'chat',messages})});
+    const j=await r.json().catch(()=>null);
+    if(r.ok&&j?.choices?.[0]?.message?.content)return j.choices[0].message.content;
+    throw new Error(j?.error||('HTTP '+r.status));
+  }catch(e){
+    const last=messages[messages.length-1]?.content||'halo';
+    const ctx=messages.slice(0,-1).filter(m=>m.role==='user').map(m=>'- '+m.content).join('\n');
+    const url='https://text.pollinations.ai/'+encodeURIComponent(last+(ctx?'\n\nKonteks:\n'+ctx:''))+'?model=openai&system='+encodeURIComponent(AI_SYS[aiTab]);
+    const r2=await fetch(url);
+    if(!r2.ok)throw new Error('Server utama ('+e.message+') dan cadangan (HTTP '+r2.status+') sama-sama gagal');
+    const c=await r2.text();
+    if(!c||c.trim().length<2)throw new Error('Respons kosong, coba lagi');
+    return c;
+  }
+}
+function callImgUrl(prompt){
+  return 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=768&height=768&nologo=true&seed='+Math.floor(Math.random()*1e6);
 }
 async function primaryImg(prompt){
   const r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'image',prompt})});
-  let j=null;try{j=await r.json()}catch(e){}
+  const j=await r.json().catch(()=>null);
   if(!r.ok)throw new Error(j?.error||('HTTP '+r.status));
   const d=j?.data?.[0];
   const u=d?.url||(d?.b64_json?'data:image/png;base64,'+d.b64_json:null);
   if(!u)throw new Error('Respons tanpa gambar');
   return u;
 }
-function fallbackImgUrl(prompt){
-  return 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=768&height=768&nologo=true&seed='+Math.floor(Math.random()*1e6);
-}
 async function callImg(prompt){
-  try{return await primaryImg(prompt)}catch(e){}
-  const u=fallbackImgUrl(prompt);
+  try{ return await primaryImg(prompt); }catch(e){}
+  const u=callImgUrl(prompt);
   await new Promise((res,rej)=>{
     const i=new Image();
-    const t=setTimeout(()=>rej(new Error('Gambar cadangan timeout')),30000);
+    const t=setTimeout(()=>rej(new Error('Timeout membuat gambar, coba lagi')),45000);
     i.onload=()=>{clearTimeout(t);res()};
-    i.onerror=()=>{clearTimeout(t);rej(new Error('Gambar cadangan gagal dimuat'))};
+    i.onerror=()=>{clearTimeout(t);rej(new Error('Gagal membuat gambar, coba prompt lain'))};
     i.src=u;
   });
   return u;
@@ -1054,7 +1051,7 @@ function renderAI(){
     b.innerHTML=`<div style="margin:auto 0;padding:24px 4px;max-width:460px">
       <div style="display:inline-flex;padding:14px;background:#14271b;border:1px solid #304434;border-radius:20px;margin-bottom:14px">${robotSVG(70)}</div>
       <h3 style="font-family:var(--disp);font-weight:800;font-size:25px;margin-bottom:8px">Zing AI siap membantu</h3>
-      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon game, minta kode game HTML lengkap, atau tempel kodemu di tab Agent. Klik badge BETA di atas untuk mengetes koneksi AI bila terjadi error.</p>
+      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon game, minta kode game HTML lengkap, atau tempel kodemu di tab Agent dan minta versi yang lebih baik.</p>
     </div>`;
     return;
   }
