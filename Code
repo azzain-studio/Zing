@@ -92,6 +92,12 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .gc-del{position:absolute;top:10px;right:10px;z-index:4;width:30px;height:30px;border-radius:9px;border:1px solid var(--line2);background:rgba(7,17,11,.85);color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .gc-del:hover{color:var(--red);border-color:var(--red)}
 .gc-edit{right:48px}.gc-edit:hover{color:var(--green);border-color:var(--green)}
+.gc-actions{display:flex;align-items:center;gap:6px;margin-top:8px;flex-wrap:wrap}
+.gc-act{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--mut);cursor:pointer;transition:.15s}
+.gc-act:hover{border-color:var(--green);color:var(--green)}
+.gc-act.liked{color:var(--red);border-color:rgba(255,93,93,.45)}
+.gc-act svg{flex:none}
+.gc-act .n{font-weight:700}
 .home-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 28px;border-top:1px solid var(--line);color:#5f8a72;font-size:12px;flex-wrap:wrap}
 .sys{display:flex;align-items:center;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:dotPulse 1.8s infinite;flex:none}
@@ -110,6 +116,18 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .icon-pick{display:flex;gap:12px;align-items:center}
 .icon-prev{width:60px;height:60px;border-radius:14px;border:1px solid var(--line2);background:#04110a;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:var(--green);overflow:hidden;flex:none}
 .icon-prev img{width:100%;height:100%;object-fit:cover}
+.cmt-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--line)}
+.cmt-item:last-child{border-bottom:none}
+.cmt-av{width:30px;height:30px;border-radius:50%;background:#1d3a26;color:var(--green);font-weight:700;display:flex;align-items:center;justify-content:center;font-size:12px;overflow:hidden;flex:none}
+.cmt-av img{width:100%;height:100%;object-fit:cover}
+.cmt-body{flex:1;min-width:0}
+.cmt-name{font-size:11px;color:var(--mut);font-weight:600;display:flex;justify-content:space-between;gap:8px}
+.cmt-del{background:none;border:none;color:var(--mut);font-size:11px;cursor:pointer}
+.cmt-del:hover{color:var(--red)}
+.cmt-text{font-size:13.5px;line-height:1.5;word-break:break-word;margin-top:2px}
+.cmt-input-row{display:flex;gap:8px;margin-top:14px}
+.cmt-input-row input{flex:1;background:#04110a;border:1px solid var(--line);border-radius:12px;padding:10px 14px;color:var(--ink);font-size:13.5px;outline:none}
+.cmt-input-row input:focus{border-color:var(--green)}
 #player{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column}
 .p-head{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(5,13,8,.95)}
 .p-title{font-family:var(--disp);font-weight:800;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
@@ -190,9 +208,11 @@ body[data-mode="hp"] .ai-tab{flex:1;padding:10px 6px;font-size:12px}
 body[data-mode="hp"] .chat-msg,body[data-mode="hp"] .ai-msg{max-width:100%}
 body[data-mode="hp"] .modal{padding:0;align-items:flex-end}
 body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-height:86vh;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+body[data-mode="hp"] .gc-actions{padding:6px 10px 10px}
+body[data-mode="hp"] .gc-act{padding:5px 10px;font-size:11px}
 </style>
 </head>
-<body class="locked">
+<body class="locked" data-screen="screen-splash">
 
 <div id="wipe"><span>ZING</span></div>
 
@@ -228,7 +248,7 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
   <div class="center-wrap" style="gap:22px">
     <div id="loginRobot"></div>
     <h1 style="font-family:var(--disp);font-size:30px">Buka Akses <em style="color:var(--green);font-style:normal">Penuh</em></h1>
-    <p style="color:var(--mut);max-width:320px">Masuk untuk main semua game, ikut chat, dan pakai Zing AI.</p>
+    <p style="color:var(--mut);max-width:320px">Masuk untuk main semua game, ikut chat, like & komentar, dan pakai Zing AI.</p>
     <button class="btn btn-white" id="btnGoogle">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.3C36.9 40.4 44 35 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg>
       Masuk dengan Google
@@ -379,6 +399,18 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
   </div>
 </div>
 
+<div class="modal" id="cmtModal" hidden>
+  <div class="modal-panel" style="text-align:left">
+    <h3 id="cmtTitle" style="text-align:left">Komentar</h3>
+    <div id="cmtList" style="margin-top:10px;max-height:50vh;overflow:auto"></div>
+    <div class="cmt-input-row">
+      <input type="text" id="cmtInput" maxlength="200" placeholder="Tulis komentar...">
+      <button class="btn-send" id="cmtSend"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+    <button class="btn btn-ghost" id="cmtClose" style="width:100%;margin-top:12px">Tutup</button>
+  </div>
+</div>
+
 <section id="player" hidden>
   <div class="p-head">
     <button class="icon-btn" id="btnBack"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
@@ -415,7 +447,7 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
 import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import {getFirestore,doc,setDoc,getDoc,collection,query,orderBy,limit,addDoc,deleteDoc,updateDoc,onSnapshot,serverTimestamp,increment} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+import {getFirestore,doc,setDoc,getDoc,collection,query,orderBy,limit,where,addDoc,deleteDoc,updateDoc,onSnapshot,serverTimestamp,increment} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig={apiKey:"AIzaSyDYNnsjIEGiosXbflNTBTHKXuX3i1rKpp4",authDomain:"zain-studio-browser.firebaseapp.com",projectId:"zain-studio-browser",storageBucket:"zain-studio-browser.firebasestorage.app",messagingSenderId:"971058949669",appId:"1:971058949669:web:656f418432972b9ae0d9cc"};
 const ADMIN_EMAIL='zainprivatechorme@gmail.com';
@@ -428,6 +460,7 @@ const provider=new GoogleAuthProvider();
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 let firebaseUser=null,userDoc=null,lockNext=null,unread=0;
 const isAdmin=()=>firebaseUser?.email===ADMIN_EMAIL;
+const currentScreen=()=>document.body.dataset.screen||'';
 
 function toast(msg,type='ok'){
   const t=document.createElement('div');t.className='toast '+type;
@@ -462,9 +495,8 @@ async function ensureUserDoc(u){try{const d=await getDoc(doc(db,'users',u.uid));
 onAuthStateChanged(auth,async u=>{
   firebaseUser=u;
   if(u){await ensureUserDoc(u);$('#lockModal').hidden=true;if(currentScreen()==='screen-login')showWipe('screen-home');if(lockNext){const fn=lockNext;lockNext=null;fn()}}
-  renderTop();renderNavProfile();
+  renderTop();renderNavProfile();subMyLikes();
 });
-const currentScreen=()=>document.body.dataset.screen||'';
 function openLock(next){lockNext=next||null;$('#lockModal').hidden=false}
  $('#btnLockCancel').onclick=()=>{$('#lockModal').hidden=true;lockNext=null};
 
@@ -487,11 +519,17 @@ function renderNavProfile(){
   if(firebaseUser){b.onclick=openSettings;$('#navProfileLbl').textContent='Profil'}
   else{b.onclick=()=>showWipe('screen-login');$('#navProfileLbl').textContent='Masuk'}
 }
+
+/* Buka game dari link share (?game=id) */
+let pendingGame=null;
+try{pendingGame=new URLSearchParams(location.search).get('game')}catch(e){}
+
 function enterHome(){
   showWipe('screen-home');
   const n=(userDoc?.name||firebaseUser?.displayName||'').split(' ')[0];
   $('#helloTitle').innerHTML=n?`Halo, <em>${n}</em>.`:'Selamat datang.';
   $('#helloSub').textContent=firebaseUser?'Pilih game, nonton TV, atau ngobrol di chat.':'Masuk untuk main semua game & ikut chat.';
+  if(pendingGame){const g=pendingGame;pendingGame=null;setTimeout(()=>openGame(g),60)}
 }
  $('#btnBackHome').onclick=()=>enterHome();
  $('#navHome').onclick=()=>enterHome();
@@ -542,13 +580,15 @@ function renderBuiltin(){
   Object.keys(BUILTIN_DEFAULTS).forEach(id=>{
     const d=builtinOf(id);
     const el=document.createElement('article');el.className='gcard builtin';
+    el.dataset.gid=id;el.dataset.builtin='1';
     const art=document.createElement('div');art.className='gc-art';
     const img=new Image();img.src=d.icon;img.alt=d.title;art.appendChild(img);
     const info=document.createElement('div');info.className='gc-info';
-    info.innerHTML=`<h4></h4><p></p><div class="gc-meta">${playIco}<span>dimainkan</span></div>`;
+    info.innerHTML='<h4></h4><p></p>';
     info.querySelector('h4').textContent=d.title;
     info.querySelector('p').textContent=d.desc;
     el.appendChild(art);el.appendChild(info);
+    addActions(el,id,true);
     el.onclick=()=>openGame(id);
     g.prepend(el);
   });
@@ -562,14 +602,16 @@ function renderCloud(){
   const before=$('#cardUpload');
   cloudGames.forEach(gm=>{
     const el=document.createElement('article');el.className='gcard cloud';
+    el.dataset.gid=gm.id;el.dataset.builtin='0';
     const art=document.createElement('div');art.className='gc-art';
     if(gm.icon){const i=new Image();i.src=gm.icon;art.appendChild(i)}
     else{const hue=[...(gm.name||'x')].reduce((a,c)=>(a*31+c.charCodeAt(0))%360,7);art.style.background=`hsl(${hue} 40% 13%)`;const t=document.createElement('div');t.className='gi-letter';t.textContent=(gm.name||'?')[0].toUpperCase();art.appendChild(t)}
     const info=document.createElement('div');info.className='gc-info';
-    info.innerHTML=`<span class="gc-tag">Komunitas</span><h4></h4><p></p><div class="gc-meta">${playIco}<span><b>${gm.plays||0}</b>&nbsp;dimainkan</span></div>`;
+    info.innerHTML='<span class="gc-tag">Komunitas</span><h4></h4><p></p>';
     info.querySelector('h4').textContent=gm.name||'Tanpa nama';
     info.querySelector('p').textContent='oleh '+(gm.author||'Anonim');
     el.appendChild(art);el.appendChild(info);
+    addActions(el,gm.id,false);
     el.onclick=()=>openGame(gm.id);
     if(firebaseUser&&(isAdmin()||gm.uid===firebaseUser.uid)){
       const del=document.createElement('button');del.className='gc-del';del.title='Hapus';
@@ -586,6 +628,127 @@ function renderCloud(){
 }
 onSnapshot(query(collection(db,'games'),orderBy('ts','desc'),limit(60)),s=>{cloudGames=s.docs.map(d=>({id:d.id,...d.data()}));renderCloud()},e=>console.warn(e.message));
 function updateCount(){$('#countGames').textContent=(Object.keys(BUILTIN_DEFAULTS).length+cloudGames.length)+' KONTEN'}
+
+/* ===== SOSIAL: like, komentar, share ===== */
+const heartSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+const cmtSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+const shareSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
+
+function gameMeta(id){
+  if(BUILTIN_DEFAULTS[id]){const d=builtinOf(id);return{title:d.title,url:d.url}}
+  const gm=cloudGames.find(g=>g.id===id);
+  return gm?{title:gm.name,url:gm.link||''}:null;
+}
+let myLikes=new Set(),builtinLikes={},cmtCounts={},unsubMyLikes=null;
+function subMyLikes(){
+  if(unsubMyLikes){unsubMyLikes();unsubMyLikes=null}
+  if(!firebaseUser){myLikes=new Set();refreshLikeUI();return}
+  unsubMyLikes=onSnapshot(query(collection(db,'likes'),where('uid','==',firebaseUser.uid)),s=>{
+    myLikes=new Set(s.docs.map(d=>d.data().gameId));refreshLikeUI();
+  },()=>{});
+}
+onSnapshot(doc(db,'stats','likes'),s=>{builtinLikes=s.data()||{};refreshLikeUI()},()=>{});
+onSnapshot(query(collection(db,'gameComments'),orderBy('ts','desc'),limit(200)),s=>{
+  cmtCounts={};s.docs.forEach(d=>{const g=d.data().gameId;cmtCounts[g]=(cmtCounts[g]||0)+1});refreshLikeUI();
+},()=>{});
+
+function refreshLikeUI(){
+  $$('.gcard').forEach(el=>{
+    const gid=el.dataset.gid;if(!gid)return;
+    const lb=el.querySelector('.gc-act.like');
+    if(lb){
+      const n=el.dataset.builtin==='1'?(builtinLikes[gid]||0):(cloudGames.find(x=>x.id===gid)?.likeCount||0);
+      lb.querySelector('.n').textContent=n>0?n:'';
+      lb.classList.toggle('liked',myLikes.has(gid));
+    }
+    const cb=el.querySelector('.gc-act.cmt');
+    if(cb){const c=cmtCounts[gid]||0;cb.querySelector('.n').textContent=c>0?c:''}
+  });
+}
+
+async function toggleLike(gid,builtin){
+  if(!firebaseUser)return openLock(()=>toggleLike(gid,builtin)),null;
+  const lid=gid+'__'+firebaseUser.uid;
+  try{
+    const snap=await getDoc(doc(db,'likes',lid));
+    if(snap.exists()){
+      await deleteDoc(doc(db,'likes',lid));
+      if(builtin){try{await updateDoc(doc(db,'stats','likes'),{[gid]:increment(-1)})}catch(e){await setDoc(doc(db,'stats','likes'),{[gid]:0},{merge:true})}}
+      else await updateDoc(doc(db,'games',gid),{likeCount:increment(-1)}).catch(()=>{});
+      myLikes.delete(gid);return false;
+    }else{
+      await setDoc(doc(db,'likes',lid),{gameId:gid,uid:firebaseUser.uid,ts:serverTimestamp()});
+      if(builtin){try{await updateDoc(doc(db,'stats','likes'),{[gid]:increment(1)})}catch(e){await setDoc(doc(db,'stats','likes'),{[gid]:1},{merge:true})}}
+      else await updateDoc(doc(db,'games',gid),{likeCount:increment(1)}).catch(()=>{});
+      myLikes.add(gid);return true;
+    }
+  }catch(e){toast('Gagal menyukai game','err');return null}
+}
+
+async function shareGame(gid){
+  const m=gameMeta(gid);if(!m)return;
+  const link=location.origin+location.pathname+'?game='+encodeURIComponent(gid);
+  try{
+    if(navigator.share)await navigator.share({title:'Zing — '+m.title,text:'Main '+m.title+' di Zing!',url:link});
+    else{await navigator.clipboard.writeText(link);toast('Link game disalin, bagikan ke temanmu')}
+  }catch(e){/* batal */}
+}
+
+function addActions(el,gid,builtin){
+  const info=el.querySelector('.gc-info');if(!info)return;
+  const row=document.createElement('div');row.className='gc-actions';
+  const like=document.createElement('button');like.type='button';like.className='gc-act like';like.title='Suka';
+  like.innerHTML=heartSVG+'<span class="n"></span>';
+  like.onclick=async e=>{e.stopPropagation();await toggleLike(gid,builtin);refreshLikeUI()};
+  const cmt=document.createElement('button');cmt.type='button';cmt.className='gc-act cmt';cmt.title='Komentar';
+  cmt.innerHTML=cmtSVG+'<span class="n"></span>';
+  cmt.onclick=e=>{e.stopPropagation();openComments(gid)};
+  const shr=document.createElement('button');shr.type='button';shr.className='gc-act';shr.title='Bagikan';
+  shr.innerHTML=shareSVG;
+  shr.onclick=e=>{e.stopPropagation();shareGame(gid)};
+  row.appendChild(like);row.appendChild(cmt);row.appendChild(shr);
+  info.appendChild(row);
+}
+
+let unsubCmt=null,cmtGid=null;
+function openComments(gid){
+  const m=gameMeta(gid);
+  $('#cmtTitle').textContent='Komentar — '+(m?m.title:gid);
+  cmtGid=gid;$('#cmtModal').hidden=false;$('#cmtInput').value='';
+  if(unsubCmt)unsubCmt();
+  const q=query(collection(db,'gameComments'),where('gameId','==',gid),limit(50));
+  unsubCmt=onSnapshot(q,s=>{
+    const list=$('#cmtList');list.textContent='';
+    const arr=s.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.ts?.toMillis?.()||0)-(a.ts?.toMillis?.()||0));
+    if(!arr.length){list.innerHTML='<p style="color:var(--mut);font-size:13px;padding:8px 0">Belum ada komentar. Jadilah yang pertama.</p>';return}
+    arr.forEach(c=>{
+      const row=document.createElement('div');row.className='cmt-item';
+      const av=document.createElement('div');av.className='cmt-av';
+      if(c.av){const i=new Image();i.src=c.av;av.appendChild(i)}else av.textContent=(c.name||'?')[0].toUpperCase();
+      const body=document.createElement('div');body.className='cmt-body';
+      const nm=document.createElement('div');nm.className='cmt-name';
+      const n=document.createElement('span');n.textContent=c.name||'Anonim';nm.appendChild(n);
+      if(firebaseUser&&c.uid===firebaseUser.uid){
+        const del=document.createElement('button');del.className='cmt-del';del.textContent='hapus';
+        del.onclick=async()=>{try{await deleteDoc(doc(db,'gameComments',c.id))}catch(e){toast('Gagal hapus','err')}};
+        nm.appendChild(del);
+      }
+      const tx=document.createElement('div');tx.className='cmt-text';tx.textContent=c.text||'';
+      body.appendChild(nm);body.appendChild(tx);
+      row.appendChild(av);row.appendChild(body);list.appendChild(row);
+    });
+  },e=>toast('Komentar: '+(e.code||e.message),'err'));
+}
+async function sendComment(){
+  const t=$('#cmtInput').value.trim();if(!t||!cmtGid)return;
+  if(!firebaseUser)return openLock(sendComment);
+  $('#cmtInput').value='';
+  try{await addDoc(collection(db,'gameComments'),{gameId:cmtGid,uid:firebaseUser.uid,name:userDoc?.name||'Anonim',av:userDoc?.av||'',text:t,ts:serverTimestamp()})}
+  catch(e){toast('Gagal kirim komentar','err');$('#cmtInput').value=t}
+}
+ $('#cmtClose').onclick=()=>{$('#cmtModal').hidden=true;if(unsubCmt){unsubCmt();unsubCmt=null}};
+ $('#cmtSend').onclick=sendComment;
+ $('#cmtInput').onkeydown=e=>{if(e.key==='Enter')sendComment()};
 
 /* ===== PLAYER ===== */
 let pTimer=null,lastSrc='',watchdog=null;
@@ -623,6 +786,11 @@ function openGame(id){
  $('#btnZen').onclick=()=>{$('#player').classList.add('zen');document.documentElement.requestFullscreen?.().catch(()=>{})};
  $('#btnZenExit').onclick=()=>{$('#player').classList.remove('zen');if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})};
  $('#btnFull').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else $('#player').requestFullscreen?.().catch(()=>{})};
+/* Fullscreen: title hilang saat fullscreen, muncul lagi saat keluar */
+document.addEventListener('fullscreenchange',()=>{
+  if(currentScreen()==='player'||!$('#player').hidden)
+    $('#player').classList.toggle('zen',!!document.fullscreenElement);
+});
  $('#btnReload').onclick=()=>{if(lastSrc){$('#frameError').hidden=true;$('#zingLoader').style.display='flex';$('#gameFrame').src=lastSrc}};
  $('#btnFrameRetry').onclick=()=>$('#btnReload').onclick();
 
@@ -759,15 +927,15 @@ function loadAdminForm(){
   }catch(e){toast('Gagal simpan: '+(e.code||e.message),'err')}
 };
 
-/* ===== ZING AI (via Netlify Function proxy) ===== */
+/* ===== ZING AI (via EdgeOne function /ai) ===== */
 async function aiCall(mode,payload){
   let r;
   try{
-    r=await fetch('/.netlify/functions/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,...payload})});
+    r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,...payload})});
   }catch(e){
     throw new Error('Tidak bisa terhubung ke server AI. Periksa koneksi internetmu.');
   }
-  if(r.status===404)throw new Error('Fungsi AI belum terpasang. Deploy netlify/functions/ai.js lewat GitHub atau Netlify CLI (drag-and-drop tidak menjalankan functions).');
+  if(r.status===404)throw new Error('Fungsi AI belum terpasang. Pastikan file functions/ai.js ada dan deploy lewat Git integration EdgeOne.');
   const j=await r.json().catch(()=>null);
   if(!r.ok)throw new Error(j?.error||('HTTP '+r.status));
   return j;
