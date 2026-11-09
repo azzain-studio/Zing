@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Zing — Arcade & TV</title>
+<meta name="theme-color" content="#070b09">
+<meta name="description" content="Zing — lobi game & TV.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#070b09;--panel:rgba(13,28,18,.6);--line:rgba(47,232,107,.15);--line2:rgba(47,232,107,.3);--green:#2fe86b;--green-deep:#0c4f26;--ink:#eafff2;--mut:#7fa98d;--red:#ff5d5d;--amber:#ffc94d;--disp:'Bricolage Grotesque',sans-serif;--body:'Space Grotesk',sans-serif}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden}
+body.locked{overflow:hidden}
+[hidden]{display:none!important}
+::selection{background:var(--green);color:#04180b}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-thumb{background:var(--line2);border-radius:4px}
+button{font-family:inherit;color:inherit}svg{display:block}
+.screen{position:fixed;inset:0;z-index:1;overflow-y:auto;overflow-x:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}94%{transform:scaleY(.1)}97%{transform:scaleY(1)}}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(47,232,107,.4)}50%{box-shadow:0 0 0 6px rgba(47,232,107,0)}}
+@keyframes indet{0%{left:-40%}100%{left:105%}}
+@keyframes wipePass{0%{transform:translateY(101%)}42%{transform:translateY(0)}58%{transform:translateY(0)}100%{transform:translateY(-101%)}}
+@keyframes spinRing{to{transform:rotate(360deg)}}
+#wipe{position:fixed;inset:0;z-index:200;background:var(--green);display:flex;align-items:center;justify-content:center;transform:translateY(101%);pointer-events:none}
+#wipe span{font-family:var(--disp);font-weight:800;font-size:44px;color:#04180b}
+#wipe.run{animation:wipePass .9s cubic-bezier(.7,0,.2,1) both}
+.robot{overflow:visible}.robot .eyes{transform-origin:50px 50px;animation:blink 5s infinite}
+.center-wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;height:100%;text-align:center;padding:20px}
+.wordmark{font-family:var(--disp);font-weight:800;font-size:42px;letter-spacing:-.03em;display:flex;align-items:baseline;gap:8px}
+.wordmark .v2{font-size:14px;font-weight:700;color:#04180b;background:var(--green);border-radius:6px;padding:3px 8px;transform:translateY(-6px)}
+.tagline{font-size:11px;letter-spacing:.4em;color:var(--mut);text-transform:uppercase}
+.bar{width:240px;height:5px;border-radius:4px;background:rgba(47,232,107,.1);overflow:hidden;position:relative}
+.bar i{position:absolute;top:0;bottom:0;left:0;width:0%;background:var(--green)}
+.bar.indet i{width:35%;animation:indet 1.1s infinite}
+.splash-meta{display:flex;justify-content:space-between;width:240px;font-size:12px;color:var(--mut)}
+.splash-meta b{color:var(--green)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;padding:12px 20px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:.15s}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--green);color:#04180b;box-shadow:0 4px 0 var(--green-deep)}
+.btn-ghost{background:rgba(47,232,107,.05);color:var(--ink);border-color:var(--line2)}
+.btn-white{background:#fff;color:#14181c;border-color:#d8dee2}
+.back-link{background:none;border:none;color:var(--mut);font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:rgba(7,17,11,.6);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;backdrop-filter:blur(6px)}
+.icon-btn:hover{background:rgba(47,232,107,.12)}
+.mode-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.mode-card{width:210px;padding:24px;border-radius:18px;border:1px solid var(--line2);background:var(--panel);cursor:pointer;transition:.2s;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:8px}
+.mode-card:hover{border-color:var(--green);transform:translateY(-3px)}
+.mode-card .mc-ico{color:var(--green);display:flex}
+.mode-card b{font-family:var(--disp);font-size:17px}
+.mode-card .mc-sub{font-size:12px;color:var(--mut)}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(7,11,9,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px}
+.brand .wordmark{font-size:22px}
+.top-actions{display:flex;align-items:center;gap:10px}
+.user-chip{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--line);border-radius:99px;background:var(--panel);cursor:pointer}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--green);color:#04180b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;overflow:hidden;flex:none}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.user-chip span{font-size:14px;font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.home-main{width:min(1100px,92vw);margin:0 auto;padding:30px 0 90px}
+.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+.hello h1{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4vw,38px)}
+.hello h1 em{font-style:normal;color:var(--green)}
+.hello p{color:var(--mut);margin-top:6px;font-size:14px}
+.clock-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 16px;color:var(--mut);font-size:13px}
+.section-head{display:flex;align-items:center;gap:14px;margin:28px 0 16px}
+.section-head h3{font-family:var(--disp);font-weight:800;font-size:18px}
+.section-head i{flex:1;height:1px;background:var(--line)}
+.section-head b{font-size:11px;color:var(--mut);letter-spacing:.15em}
+.grid-games{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.gcard{position:relative;overflow:hidden;cursor:pointer;transition:.2s;display:flex;flex-direction:column;border-radius:18px;border:1px solid var(--line);background:var(--panel)}
+.gcard:hover{transform:translateY(-3px);border-color:var(--green)}
+.gc-art{aspect-ratio:1/1;height:auto;border-bottom:1px solid var(--line);overflow:hidden;flex:none}
+.gc-art img{width:100%;height:100%;object-fit:cover;display:block}
+.gi-letter{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:var(--disp);font-weight:800;font-size:56px;color:var(--green);opacity:.8}
+.gc-info{padding:14px 18px;display:flex;flex-direction:column;gap:5px;flex:1;min-width:0}
+.gc-info h4{font-family:var(--disp);font-weight:800;font-size:19px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gc-info p{color:var(--mut);font-size:12.5px;line-height:1.45}
+.gc-meta{display:flex;align-items:center;gap:6px;margin-top:auto;font-size:11px;color:#5f8a72;padding-top:4px}
+.gc-tag{align-self:flex-start;font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--green);border:1px solid var(--line2);border-radius:99px;padding:3px 10px}
+.gcard.upload{border-style:dashed;background:transparent;min-height:230px;align-items:center;justify-content:center;text-align:center;padding:20px;color:var(--mut);gap:10px}
+.gcard.upload:hover{color:var(--green);border-color:var(--green)}
+.gcard.upload h4{font-family:var(--disp);font-weight:800;font-size:17px}
+.gcard.upload p{font-size:12px}
+.up-plus{width:48px;height:48px;border-radius:50%;border:2px dashed var(--line2);display:flex;align-items:center;justify-content:center;color:var(--green)}
+.gc-del{position:absolute;top:10px;right:10px;z-index:4;width:30px;height:30px;border-radius:9px;border:1px solid var(--line2);background:rgba(7,17,11,.85);color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gc-del:hover{color:var(--red);border-color:var(--red)}
+.gc-edit{right:48px}.gc-edit:hover{color:var(--green);border-color:var(--green)}
+.home-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:16px 28px;border-top:1px solid var(--line);color:#5f8a72;font-size:12px;flex-wrap:wrap}
+.sys{display:flex;align-items:center;gap:8px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:dotPulse 1.8s infinite;flex:none}
+.modal{position:fixed;inset:0;z-index:120;background:rgba(4,10,6,.8);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-panel{width:min(480px,100%);background:#0a1410;border:1px solid var(--line2);border-radius:20px;padding:26px;animation:fadeUp .3s;max-height:88vh;overflow:auto}
+.modal-panel h3{font-family:var(--disp);font-weight:800;font-size:21px;margin-bottom:4px;text-align:center}
+.msub{color:var(--mut);font-size:14px;margin-bottom:18px;text-align:center}
+.form-grid{display:flex;flex-direction:column;gap:13px}
+.f-label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mut);margin-bottom:6px;display:block}
+.f-input,.f-area,.f-select{width:100%;background:#04110a;border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:var(--ink);font-size:14px;outline:none}
+.f-input:focus,.f-area:focus,.f-select:focus{border-color:var(--green)}
+.f-area{min-height:100px;font-family:ui-monospace,monospace;font-size:12px;resize:vertical}
+.seg{display:flex;gap:8px}
+.seg-btn{flex:1;padding:10px;border-radius:10px;border:1px solid var(--line);background:#04110a;color:var(--mut);font-size:13px;cursor:pointer}
+.seg-btn.active{border-color:var(--green);color:var(--green);background:rgba(47,232,107,.08)}
+.icon-pick{display:flex;gap:12px;align-items:center}
+.icon-prev{width:60px;height:60px;border-radius:14px;border:1px solid var(--line2);background:#04110a;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:var(--green);overflow:hidden;flex:none}
+.icon-prev img{width:100%;height:100%;object-fit:cover}
+#player{position:fixed;inset:0;z-index:100;background:#000;display:flex;flex-direction:column}
+.p-head{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--line);background:rgba(5,13,8,.95)}
+.p-title{font-family:var(--disp);font-weight:800;font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
+.p-right{margin-left:auto;display:flex;gap:8px}
+.sess-chip{border:1px solid var(--line);border-radius:10px;padding:7px 12px;font-size:13px;color:var(--mut)}
+.p-body{position:relative;flex:1;overflow:hidden}
+#gameFrame{position:absolute;inset:0;width:100%;height:100%;border:0;background:#000}
+#zingLoader{position:absolute;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;z-index:5}
+#frameError{position:absolute;inset:0;background:rgba(6,13,8,.96);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;text-align:center;padding:24px}
+#player.zen .p-head{display:none}
+.zen-btns{position:absolute;top:10px;right:10px;z-index:8;display:none;gap:8px}
+#player.zen .zen-btns{display:flex}
+.chat-fab{position:fixed;bottom:24px;right:24px;z-index:90;width:54px;height:54px;border-radius:50%;background:var(--green);color:#04180b;border:none;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(0,0,0,.5);cursor:pointer}
+#chatBadge{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;padding:0 5px;border-radius:99px;background:var(--amber);color:#231a02;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg)}
+.chat-full-head,.ai-hero{display:flex;align-items:center;gap:14px;padding:14px 20px;border-bottom:1px solid var(--line);background:rgba(7,11,9,.9);backdrop-filter:blur(10px)}
+.cf-info,.ah-info{flex:1;min-width:0}
+.chat-full-head h3,.ai-hero h3{font-family:var(--disp);font-weight:800;font-size:18px;display:flex;align-items:center;gap:10px}
+.cf-sub,.ah-sub{font-size:12px;color:var(--mut);margin-top:2px}
+.ai-badge{font-size:9px;font-weight:800;letter-spacing:.12em;background:rgba(47,232,107,.12);color:var(--green);border:1px solid var(--line2);padding:2px 8px;border-radius:6px}
+.ai-tabs{display:flex;gap:8px;padding:16px 24px 0;width:min(800px,100%);margin:0 auto}
+.ai-tab{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;border-radius:12px;font-weight:600;font-size:13px;color:var(--mut);cursor:pointer;border:1px solid var(--line);background:rgba(13,28,18,.4)}
+.ai-tab.active{color:var(--green);background:rgba(47,232,107,.1);border-color:var(--line2)}
+.chat-full-body,.ai-body{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:16px;width:min(800px,100%);margin:0 auto}
+.chat-msg,.ai-msg{display:flex;flex-direction:column;gap:6px;max-width:85%}
+.chat-msg.me,.ai-msg.user{align-self:flex-end;align-items:flex-end}
+.chat-msg .cm-av{width:32px;height:32px;border-radius:50%;background:#1d3a26;color:var(--green);font-weight:700;display:flex;align-items:center;justify-content:center;overflow:hidden;flex:none}
+.chat-msg .cm-av img{width:100%;height:100%;object-fit:cover}
+.cm-name,.ai-role{font-size:11px;color:var(--mut);font-weight:600}
+.cm-bubble,.ai-content{padding:12px 16px;border-radius:16px;font-size:14px;line-height:1.55;white-space:pre-wrap;word-break:break-word}
+.chat-msg.me .cm-bubble,.ai-msg.user .ai-content{background:var(--green);color:#04180b;border-bottom-right-radius:4px}
+.chat-msg .cm-bubble,.ai-msg.bot .ai-content{background:var(--panel);border:1px solid var(--line);border-bottom-left-radius:4px}
+.ai-msg .ai-content{width:fit-content;max-width:100%}
+.ai-loader{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:13px;padding:12px 16px;background:var(--panel);border:1px solid var(--line);border-radius:16px;align-self:flex-start;width:fit-content}
+.ai-input-bar,.chat-full-foot{padding:14px 24px 18px;border-top:1px solid var(--line);background:rgba(7,11,9,.95)}
+.ai-input-bar .inner,.chat-input{display:flex;gap:10px;align-items:center;width:min(800px,100%);margin:0 auto}
+.ai-input-bar textarea,.chat-full-foot input{flex:1;background:#04110a;border:1px solid var(--line);border-radius:14px;padding:12px 16px;color:var(--ink);font-size:14px;outline:none;resize:none}
+.ai-input-bar textarea:focus,.chat-full-foot input:focus{border-color:var(--green)}
+.ai-send-btn,.btn-send{width:44px;height:44px;border-radius:12px;background:var(--green);color:#04180b;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+.ai-code{background:#04110a;border:1px solid var(--line);border-radius:12px;margin-top:8px;overflow:hidden;width:100%}
+.ai-code-bar{display:flex;justify-content:flex-end;gap:6px;padding:8px;background:rgba(47,232,107,.05);border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ai-code-bar button{background:rgba(47,232,107,.1);border:1px solid var(--line2);color:var(--green);padding:5px 12px;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer}
+.ai-code pre{padding:12px;font-family:ui-monospace,monospace;font-size:12px;color:#a5ffc9;overflow:auto;max-height:320px;white-space:pre;margin:0}
+.ai-img-result{display:flex;flex-direction:column;gap:10px;align-items:flex-start}
+.ai-img-result img{max-width:min(320px,100%);border-radius:14px;border:1px solid var(--line2)}
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:90;background:rgba(7,11,9,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);justify-content:space-around;align-items:stretch;padding-bottom:env(safe-area-inset-bottom)}
+.bottom-nav button{background:none;border:none;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:600;padding:9px 14px;position:relative;min-width:64px}
+.bottom-nav button.active{color:var(--green)}
+#toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
+.toast{display:flex;align-items:center;gap:10px;background:#0f2416;border:1px solid var(--line2);padding:12px 18px;border-radius:12px;font-size:14px;max-width:min(440px,88vw)}
+.toast.err{border-color:#5c2323;background:#241010}
+.toast.ok svg{color:var(--green)}.toast.err svg{color:var(--red)}
+/* ===== MODE HP ===== */
+body[data-mode="hp"] .top{padding:10px 14px}
+body[data-mode="hp"] .brand .wordmark{font-size:18px}
+body[data-mode="hp"] .home-main{width:100%;max-width:640px;padding:14px 12px 24px}
+body[data-mode="hp"] .hello{margin-bottom:14px}
+body[data-mode="hp"] .hello h1{font-size:21px}
+body[data-mode="hp"] .clock-chip{display:none}
+body[data-mode="hp"] .section-head{margin:16px 0 10px}
+body[data-mode="hp"] .grid-games{grid-template-columns:repeat(2,1fr);gap:10px}
+body[data-mode="hp"] .gcard{border-radius:14px}
+body[data-mode="hp"] .gc-info{padding:8px 10px 10px;gap:2px}
+body[data-mode="hp"] .gc-info h4{font-size:13.5px}
+body[data-mode="hp"] .gc-info p,body[data-mode="hp"] .gc-tag,body[data-mode="hp"] .gc-meta{display:none}
+body[data-mode="hp"] .gcard.upload{min-height:0;aspect-ratio:1/1;padding:12px;gap:8px}
+body[data-mode="hp"] .gcard.upload h4{font-size:13px}
+body[data-mode="hp"] .gcard.upload p,body[data-mode="hp"] .up-plus{display:none}
+body[data-mode="hp"] .home-foot,body[data-mode="hp"] .chat-fab{display:none}
+body[data-mode="hp"][data-screen="screen-home"] .bottom-nav,
+body[data-mode="hp"][data-screen="screen-chat"] .bottom-nav,
+body[data-mode="hp"][data-screen="screen-ai"] .bottom-nav{display:flex}
+body.playing .bottom-nav{display:none!important}
+body[data-mode="hp"] #screen-chat,body[data-mode="hp"] #screen-ai{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+body[data-mode="hp"] .chat-full-body,body[data-mode="hp"] .ai-body{padding:14px 12px}
+body[data-mode="hp"] .chat-full-foot,body[data-mode="hp"] .ai-input-bar{padding:10px 12px}
+body[data-mode="hp"] .ai-tabs{padding:10px 12px 0}
+body[data-mode="hp"] .ai-tab{flex:1;padding:10px 6px;font-size:12px}
+body[data-mode="hp"] .chat-msg,body[data-mode="hp"] .ai-msg{max-width:100%}
+body[data-mode="hp"] .modal{padding:0;align-items:flex-end}
+body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-height:86vh;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
+</style>
+</head>
+<body class="locked">
+
+<div id="wipe"><span>ZING</span></div>
+
+<section class="screen" id="screen-splash">
+  <div class="center-wrap">
+    <div id="splashRobot"></div>
+    <div class="wordmark"><span>Zing</span><span class="v2">ARCADE</span></div>
+    <p class="tagline">Lobi Game & TV</p>
+    <div class="bar"><i></i></div>
+    <div class="splash-meta"><span id="splashStatus">Menghidupkan inti Zing</span><b id="splashPct">0%</b></div>
+  </div>
+</section>
+
+<section class="screen" id="screen-mode" hidden>
+  <div class="center-wrap" style="gap:26px">
+    <div id="modeRobot"></div>
+    <div class="wordmark"><span>Zing</span><span class="v2">ARCADE</span></div>
+    <h1 style="font-family:var(--disp);font-size:26px">Pilih Mode Tampilan</h1>
+    <div class="mode-cards">
+      <button class="mode-card" data-mode="hp">
+        <span class="mc-ico"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="7" y="2" width="10" height="20" rx="2.5"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5" stroke-linecap="round"/></svg></span>
+        <b>Mode HP</b><span class="mc-sub">Navigasi bawah, kartu kotak</span>
+      </button>
+      <button class="mode-card" data-mode="pc">
+        <span class="mc-ico"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="4" width="20" height="13" rx="2"/><line x1="8" y1="21" x2="16" y2="21" stroke-linecap="round"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+        <b>Mode PC</b><span class="mc-sub">Layar lebar, detail penuh</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="screen-login" hidden>
+  <div class="center-wrap" style="gap:22px">
+    <div id="loginRobot"></div>
+    <h1 style="font-family:var(--disp);font-size:30px">Buka Akses <em style="color:var(--green);font-style:normal">Penuh</em></h1>
+    <p style="color:var(--mut);max-width:320px">Masuk untuk main semua game, ikut chat, dan pakai Zing AI.</p>
+    <button class="btn btn-white" id="btnGoogle">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.3C36.9 40.4 44 35 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg>
+      Masuk dengan Google
+    </button>
+    <button class="back-link" id="btnBackHome">Jelajahi tanpa masuk</button>
+  </div>
+</section>
+
+<section class="screen" id="screen-home" hidden>
+  <header class="top">
+    <div class="brand"><span id="brandRobot"></span><div class="wordmark"><span>Zing</span><span class="v2">ARCADE</span></div></div>
+    <div class="top-actions" id="topActions"></div>
+  </header>
+  <main class="home-main">
+    <div class="hello">
+      <div><h1 id="helloTitle">Selamat datang.</h1><p id="helloSub">Pilih game atau TV dan mulai.</p></div>
+      <div class="clock-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg><b id="clock">--:--:--</b></div>
+    </div>
+    <div class="section-head"><h3>Game & TV</h3><i></i><b id="countGames"></b></div>
+    <div class="grid-games" id="gridGames">
+      <article class="gcard upload" id="cardUpload">
+        <div class="up-plus"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
+        <h4>Unggah Game</h4>
+        <p>Link atau kode HTML</p>
+      </article>
+    </div>
+  </main>
+  <footer class="home-foot">
+    <span>Zing Arcade</span>
+    <button class="back-link" id="btnChangeMode" style="margin:0">Ganti mode tampilan</button>
+    <span class="sys"><span class="dot"></span>Semua sistem normal</span>
+  </footer>
+</section>
+
+<section class="screen" id="screen-chat" hidden>
+  <header class="chat-full-head">
+    <button class="icon-btn" id="btnBackChat"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <div class="cf-info"><h3><span class="dot"></span> Chat Global</h3><div class="cf-sub">Terhubung dengan semua pemain</div></div>
+  </header>
+  <div class="chat-full-body" id="chatMessages"></div>
+  <div class="chat-full-foot">
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Ketik pesan..." maxlength="200">
+      <button class="btn-send" id="btnSend"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<section class="screen" id="screen-ai" hidden>
+  <header class="ai-hero">
+    <button class="icon-btn" id="btnBackAI"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <div style="width:44px;height:44px;position:relative;flex:none">
+      <div style="position:absolute;inset:-5px;border:2px dashed rgba(47,232,107,.3);border-radius:50%;animation:spinRing 9s linear infinite"></div>
+      <div id="aiHeroRobot"></div>
+    </div>
+    <div class="ah-info"><h3>Zing AI <span class="ai-badge">BETA</span></h3><div class="ah-sub">Gambar · Kode · Agent perbaiki kode</div></div>
+  </header>
+  <div class="ai-tabs">
+    <button class="ai-tab active" data-mode="image"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 5-5 4 4 4-6 5 7"/></svg>Gambar</button>
+    <button class="ai-tab" data-mode="code"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-15-2 18"/></svg>Kode</button>
+    <button class="ai-tab" data-mode="agent"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="7" width="16" height="12" rx="4"/><path d="M12 7V4M8 4h8"/><circle cx="9" cy="13" r="1"/><circle cx="15" cy="13" r="1"/></svg>Agent</button>
+  </div>
+  <div class="ai-body" id="aiBody"></div>
+  <div class="ai-input-bar">
+    <div class="inner">
+      <textarea id="aiInput" placeholder="Ketik permintaanmu..." rows="1"></textarea>
+      <button class="ai-send-btn" id="aiSend"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+    </div>
+  </div>
+</section>
+
+<div class="modal" id="lockModal" hidden>
+  <div class="modal-panel">
+    <div style="display:flex;justify-content:center;margin-bottom:10px" id="lockRobot"></div>
+    <h3>Perlu masuk dulu</h3>
+    <p class="msub">Fitur ini tersedia setelah masuk dengan Google.</p>
+    <button class="btn btn-white" id="btnLockGoogle" style="width:100%"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.3C36.9 40.4 44 35 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg><span>Masuk dengan Google</span></button>
+    <button class="btn btn-ghost" id="btnLockCancel" style="width:100%;margin-top:8px">Nanti saja</button>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal" hidden>
+  <div class="modal-panel" style="text-align:left">
+    <h3 style="text-align:left">Pengaturan</h3>
+    <div class="form-grid" style="margin-top:14px">
+      <div class="icon-pick">
+        <div class="icon-prev" id="setAvatarPrev">?</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+          <label class="btn btn-ghost" style="padding:9px;font-size:12px">Pilih Foto<input type="file" id="setAvatar" accept="image/*" hidden></label>
+          <button class="back-link" id="setAvatarClear" style="margin:0;text-align:left">Hapus foto</button>
+        </div>
+      </div>
+      <div><label class="f-label">Nama</label><input class="f-input" id="setName" maxlength="30"></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-primary" id="btnSaveProfile" style="flex:1">Simpan Profil</button><button class="btn btn-ghost" id="btnCloseSettings">Tutup</button></div>
+      <button class="btn btn-ghost" id="btnMode2" style="width:100%">Ganti Mode Tampilan</button>
+      <div id="adminSection" hidden style="border-top:1px solid var(--line);padding-top:14px">
+        <h3 style="font-family:var(--disp);font-size:16px;margin-bottom:10px;text-align:left">Kelola Game Bawaan <span style="font-size:9px;letter-spacing:.14em;color:var(--green);border:1px solid var(--line2);padding:2px 8px;border-radius:99px;vertical-align:middle">ADMIN</span></h3>
+        <div class="form-grid">
+          <div><label class="f-label">Pilih Game</label>
+            <select id="adminGameSelect" class="f-select">
+              <option value="warga">Warga 62</option>
+              <option value="ayam">Ayam Kabur</option>
+              <option value="tv">Famelack TV</option>
+              <option value="dinner">Cosmic Diner</option>
+              <option value="jelly">Jelly Jump</option>
+            </select>
+          </div>
+          <div><label class="f-label">Judul</label><input class="f-input" id="adminTitle" maxlength="30"></div>
+          <div><label class="f-label">Deskripsi</label><input class="f-input" id="adminDesc" maxlength="80"></div>
+          <div><label class="f-label">Ikon</label>
+            <div class="icon-pick">
+              <div class="icon-prev" id="adminIconPrev">?</div>
+              <label class="btn btn-ghost" style="flex:1;padding:9px;font-size:12px">Upload Ikon Baru<input type="file" id="adminIconFile" accept="image/*" hidden></label>
+            </div>
+          </div>
+          <div><label class="f-label">URL Game</label><input class="f-input" id="adminGameUrl" placeholder="https://..."></div>
+          <button class="btn btn-primary" id="btnSaveAdminGame" style="width:100%">Simpan Perubahan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="uploadModal" hidden>
+  <div class="modal-panel" style="text-align:left">
+    <h3 id="upModalTitle" style="text-align:left">Unggah Game</h3>
+    <div class="form-grid" style="margin-top:14px">
+      <div><label class="f-label">Nama game</label><input class="f-input" id="upName" maxlength="40"></div>
+      <div><label class="f-label">Ikon (opsional)</label>
+        <div class="icon-pick">
+          <div class="icon-prev" id="upIconPrev">?</div>
+          <div style="flex:1;display:flex;flex-direction:column;gap:8px">
+            <label class="btn btn-ghost" style="padding:9px;font-size:12px">Pilih Gambar<input type="file" id="upIcon" accept="image/*" hidden></label>
+            <button class="back-link" id="upIconClear" style="margin:0;text-align:left">Hapus ikon</button>
+          </div>
+        </div>
+      </div>
+      <div><label class="f-label">Sumber</label>
+        <div class="seg" id="upSeg">
+          <button class="seg-btn active" data-k="link">Link</button>
+          <button class="seg-btn" data-k="code">Kode HTML</button>
+        </div>
+      </div>
+      <div id="rowLink"><label class="f-label">URL</label><input class="f-input" id="upLink" placeholder="https://..."></div>
+      <div id="rowCode" hidden><label class="f-label">Kode HTML</label><textarea class="f-area" id="upCode"></textarea></div>
+      <div style="display:flex;gap:8px"><button class="btn btn-primary" id="btnPublish" style="flex:1">Publikasikan</button><button class="btn btn-ghost" id="btnUploadCancel">Batal</button></div>
+    </div>
+  </div>
+</div>
+
+<section id="player" hidden>
+  <div class="p-head">
+    <button class="icon-btn" id="btnBack"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    <div class="p-title" id="pTitle">&mdash;</div>
+    <div class="p-right">
+      <div class="sess-chip"><b id="sessTime">00:00</b></div>
+      <button class="icon-btn" id="btnZen" title="Mode fokus"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="14" y1="10" x2="21" y2="3"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+      <button class="icon-btn" id="btnFull" title="Layar penuh"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3M16 3h3a2 2 0 0 1 2 2v3M16 21h3a2 2 0 0 0 2-2v-3M8 21H5a2 2 0 0 1-2-2v-3"/></svg></button>
+      <button class="icon-btn" id="btnReload" title="Muat ulang"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+    </div>
+  </div>
+  <div class="p-body">
+    <iframe id="gameFrame" hidden sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-orientation-lock allow-forms allow-modals allow-downloads" allow="autoplay; fullscreen; gamepad" allowfullscreen referrerpolicy="no-referrer"></iframe>
+    <div class="zen-btns">
+      <button class="icon-btn" id="btnZenExit" title="Tampilkan menu"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 3 3 3 3 9"/><polyline points="15 21 21 21 21 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg></button>
+      <button class="icon-btn" id="btnZenBack" title="Keluar game"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg></button>
+    </div>
+    <div id="zingLoader"><div id="zlRobot"></div><div class="bar indet" style="width:200px"><i></i></div><span style="font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--mut)">Memuat</span></div>
+    <div id="frameError" hidden><h3 style="font-family:var(--disp);font-size:22px">Konten tidak merespons</h3><p style="color:var(--mut)">Coba muat ulang atau kembali nanti.</p><button class="btn btn-primary" id="btnFrameRetry">Coba Lagi</button></div>
+  </div>
+</section>
+
+<nav class="bottom-nav" id="bottomNav">
+  <button id="navHome" class="active"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span></button>
+  <button id="navAI"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg><span>Zing AI</span></button>
+  <button id="navChat"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Chat</span><span id="navChatBadge" style="position:absolute;top:4px;right:10px;min-width:16px;height:16px;border-radius:99px;background:var(--amber);color:#231a02;font-size:9px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px"></span></button>
+  <button id="navProfile"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M5.5 21a6.5 6.5 0 0 1 13 0"/></svg><span id="navProfileLbl">Profil</span></button>
+</nav>
+
+<button id="btnChat" class="chat-fab" hidden><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span id="chatBadge" hidden></span></button>
+
+<div id="toasts"></div>
+
+<script type="module">
+import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {getFirestore,doc,setDoc,getDoc,collection,query,orderBy,limit,addDoc,deleteDoc,updateDoc,onSnapshot,serverTimestamp,increment} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
+
+const firebaseConfig={apiKey:"AIzaSyDYNnsjIEGiosXbflNTBTHKXuX3i1rKpp4",authDomain:"zain-studio-browser.firebaseapp.com",projectId:"zain-studio-browser",storageBucket:"zain-studio-browser.firebasestorage.app",messagingSenderId:"971058949669",appId:"1:971058949669:web:656f418432972b9ae0d9cc"};
+const ADMIN_EMAIL='zainprivatechorme@gmail.com';
+
+const app=initializeApp(firebaseConfig);
+const auth=getAuth(app);
+const db=getFirestore(app);
+const provider=new GoogleAuthProvider();
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let firebaseUser=null,userDoc=null,lockNext=null,unread=0;
+const isAdmin=()=>firebaseUser?.email===ADMIN_EMAIL;
+
+function toast(msg,type='ok'){
+  const t=document.createElement('div');t.className='toast '+type;
+  t.innerHTML=(type==='err'
+    ?'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="12.5"/><circle cx="12" cy="16" r=".6" fill="currentColor"/></svg>'
+    :'<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="9"/><polyline points="8.5 12.5 11 15 15.5 9.5"/></svg>')+'<span></span>';
+  t.querySelector('span').textContent=msg;
+  $('#toasts').appendChild(t);
+  setTimeout(()=>t.remove(),3400);
+}
+function robotSVG(w=120){return `<svg class="robot" width="${w}" height="${w}" viewBox="0 0 100 100" fill="none"><line x1="50" y1="8" x2="50" y2="22" stroke="#1d7a3c" stroke-width="4" stroke-linecap="round"/><polygon points="50,2 45,14 55,14" fill="#2fe86b"/><rect x="42" y="80" width="16" height="6" fill="#1bb94f"/><path d="M30 86 L70 86 L75 98 L25 98 Z" fill="#1bb94f" stroke="#0d3319" stroke-width="2"/><rect x="8" y="38" width="12" height="24" rx="2" fill="#1bb94f"/><rect x="80" y="38" width="12" height="24" rx="2" fill="#1bb94f"/><circle cx="14" cy="44" r="2" fill="#2fe86b"/><circle cx="86" cy="44" r="2" fill="#2fe86b"/><path d="M32 24 L68 24 L82 40 L82 60 L68 76 L32 76 L18 60 L18 40 Z" fill="#2fe86b" stroke="#0d3319" stroke-width="3"/><path d="M28 36 L72 36 L75 42 L75 58 L72 64 L28 64 L25 58 L25 42 Z" fill="#08150d"/><g class="eyes"><rect x="36" y="44" width="12" height="12" rx="2" fill="#2fe86b"/><rect x="52" y="44" width="12" height="12" rx="2" fill="#2fe86b"/></g><line x1="42" y1="72" x2="58" y2="72" stroke="#2fe86b" stroke-width="2" stroke-linecap="round"/></svg>`}
+ $('#splashRobot').innerHTML=robotSVG(100);$('#brandRobot').innerHTML=robotSVG(28);$('#zlRobot').innerHTML=robotSVG(60);$('#lockRobot').innerHTML=robotSVG(80);$('#loginRobot').innerHTML=robotSVG(120);$('#aiHeroRobot').innerHTML=robotSVG(44);$('#modeRobot').innerHTML=robotSVG(100);
+
+function wipe(mid){const w=$('#wipe');w.classList.remove('run');void w.offsetWidth;w.classList.add('run');setTimeout(()=>mid&&mid(),380);setTimeout(()=>w.classList.remove('run'),950)}
+function show(id){
+  document.body.dataset.screen=id;
+  $$('.screen').forEach(s=>s.hidden=s.id!==id);
+  $('#btnChat').hidden=id!=='screen-home'||document.body.dataset.mode==='hp';
+  $$('#bottomNav button').forEach(b=>b.classList.remove('active'));
+  if(id==='screen-home')$('#navHome').classList.add('active');
+  if(id==='screen-ai')$('#navAI').classList.add('active');
+  if(id==='screen-chat')$('#navChat').classList.add('active');
+  document.body.classList.remove('locked');
+}
+function showWipe(id){wipe(()=>show(id))}
+
+async function googleLogin(){try{await signInWithPopup(auth,provider)}catch(e){if(e.code==='auth/popup-blocked'){try{await signInWithRedirect(auth,provider)}catch(_){}}else if(!/cancelled|closed/i.test(e.code||''))toast('Gagal masuk: '+(e.code||e.message),'err')}}
+ $('#btnGoogle').onclick=googleLogin;$('#btnLockGoogle').onclick=googleLogin;
+
+async function ensureUserDoc(u){try{const d=await getDoc(doc(db,'users',u.uid));userDoc=d.exists()?d.data():{name:u.displayName||'Pemain',av:''};if(!d.exists())await setDoc(doc(db,'users',u.uid),{...userDoc,createdAt:serverTimestamp()})}catch(e){userDoc={name:u.displayName||'Pemain',av:''}}}
+
+onAuthStateChanged(auth,async u=>{
+  firebaseUser=u;
+  if(u){await ensureUserDoc(u);$('#lockModal').hidden=true;if(currentScreen()==='screen-login')showWipe('screen-home');if(lockNext){const fn=lockNext;lockNext=null;fn()}}
+  renderTop();renderNavProfile();
+});
+const currentScreen=()=>document.body.dataset.screen||'';
+function openLock(next){lockNext=next||null;$('#lockModal').hidden=false}
+ $('#btnLockCancel').onclick=()=>{$('#lockModal').hidden=true;lockNext=null};
+
+function renderTop(){
+  const t=$('#topActions');t.textContent='';
+  if(!firebaseUser){const b=document.createElement('button');b.className='btn btn-primary';b.textContent='Masuk';b.onclick=()=>showWipe('screen-login');t.appendChild(b);return}
+  const chip=document.createElement('div');chip.className='user-chip';chip.onclick=openSettings;
+  const av=document.createElement('div');av.className='avatar';
+  if(userDoc?.av){const i=new Image();i.src=userDoc.av;av.appendChild(i)}else av.textContent=(userDoc?.name||firebaseUser.displayName||'P')[0].toUpperCase();
+  chip.appendChild(av);
+  const sp=document.createElement('span');sp.textContent=userDoc?.name||firebaseUser.displayName||'Pemain';chip.appendChild(sp);
+  t.appendChild(chip);
+  const out=document.createElement('button');out.className='icon-btn';out.title='Keluar';
+  out.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>';
+  out.onclick=async()=>{try{await signOut(auth);userDoc=null;toast('Sampai jumpa')}catch(e){}};
+  t.appendChild(out);
+}
+function renderNavProfile(){
+  const b=$('#navProfile');
+  if(firebaseUser){b.onclick=openSettings;$('#navProfileLbl').textContent='Profil'}
+  else{b.onclick=()=>showWipe('screen-login');$('#navProfileLbl').textContent='Masuk'}
+}
+function enterHome(){
+  showWipe('screen-home');
+  const n=(userDoc?.name||firebaseUser?.displayName||'').split(' ')[0];
+  $('#helloTitle').innerHTML=n?`Halo, <em>${n}</em>.`:'Selamat datang.';
+  $('#helloSub').textContent=firebaseUser?'Pilih game, nonton TV, atau ngobrol di chat.':'Masuk untuk main semua game & ikut chat.';
+}
+ $('#btnBackHome').onclick=()=>enterHome();
+ $('#navHome').onclick=()=>enterHome();
+ $('#navAI').onclick=()=>{if(!firebaseUser)return openLock(openAI);openAI()};
+ $('#navChat').onclick=()=>openChat();
+
+ $$('.mode-card').forEach(b=>b.onclick=()=>{document.body.dataset.mode=b.dataset.mode;localStorage.setItem('zing_mode',b.dataset.mode);runSplash()});
+ $('#btnChangeMode').onclick=()=>showWipe('screen-mode');
+ $('#btnMode2').onclick=()=>{$('#settingsModal').hidden=true;showWipe('screen-mode')};
+const savedMode=localStorage.getItem('zing_mode');
+if(savedMode){document.body.dataset.mode=savedMode;runSplash()}else show('screen-mode');
+
+function runSplash(){
+  show('screen-splash');
+  const bar=document.querySelector('#screen-splash .bar i');
+  const pctEl=$('#splashPct'),stEl=$('#splashStatus');
+  const texts=['Menghidupkan inti Zing','Menyambungkan ke server','Zing siap'];
+  let pct=0;
+  const intv=setInterval(()=>{
+    pct+=2;
+    if(pct>=100){clearInterval(intv);pct=100;setTimeout(enterHome,300)}
+    bar.style.width=pct+'%';pctEl.textContent=pct+'%';
+    stEl.textContent=texts[Math.min(2,Math.floor(pct/34))];
+  },40);
+}
+
+/* ===== GAME BAWAAN ===== */
+const svgToUrl=svg=>'data:image/svg+xml,'+encodeURIComponent(svg);
+const BUILTIN_DEFAULTS={
+  warga:{title:'Warga 62',tag:'Petualangan',desc:'Jelajahi dunia hangat Kampung 62 penuh cerita.',url:'https://mainwarga62.id/',
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#33205a"/><stop offset=".6" stop-color="#c25a6a"/><stop offset="1" stop-color="#ffb26b"/></linearGradient></defs><rect width="200" height="200" fill="url(#g1)"/><circle cx="132" cy="88" r="26" fill="#ffe98a"/><rect y="146" width="200" height="54" fill="#2e1c12"/><rect x="52" y="98" width="96" height="48" fill="#f2a65a"/><polygon points="100,64 44,102 156,102" fill="#5c2e1c"/><rect x="88" y="114" width="24" height="32" fill="#5c2e1c"/><rect x="62" y="110" width="16" height="14" fill="#ffe98a"/><rect x="122" y="110" width="16" height="14" fill="#ffe98a"/><rect x="141" y="74" width="7" height="24" fill="#4a3325"/><rect x="137" y="70" width="15" height="7" fill="#6b4a38"/></svg>`)},
+  ayam:{title:'Ayam Kabur',tag:'Arcade Endless',desc:'Lari secepat kilat, jangan sampai tertangkap.',url:'https://ayamkabur.pages.dev/',
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d3b2e"/><stop offset="1" stop-color="#0c6b3d"/></linearGradient></defs><rect width="200" height="200" fill="url(#g2)"/><g stroke="#a5ffc9" stroke-width="5" stroke-linecap="round" opacity=".45"><line x1="14" y1="98" x2="52" y2="98"/><line x1="6" y1="118" x2="40" y2="118"/><line x1="18" y1="138" x2="48" y2="138"/></g><ellipse cx="114" cy="104" rx="34" ry="27" fill="#fff"/><circle cx="146" cy="80" r="17" fill="#fff"/><path d="M136 62 q5-9 10-1 q5-9 10 1z" fill="#ff5d5d"/><polygon points="160,74 176,80 160,86" fill="#ffc94d"/><circle cx="150" cy="77" r="4.2" fill="#0d3319"/><path d="M104 128 l-9 16 M132 128 l9 16" stroke="#ffc94d" stroke-width="6" stroke-linecap="round"/><path d="M84 96 q-12 -4 -14 -16" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none"/></svg>`)},
+  tv:{title:'Famelack TV',tag:'TV Streaming',desc:'Nonton siaran langsung dari seluruh dunia.',url:'https://famelack.com/',
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3a2a08"/><stop offset="1" stop-color="#1c1404"/></linearGradient></defs><rect width="200" height="200" fill="url(#g3)"/><line x1="74" y1="32" x2="100" y2="56" stroke="#8a6316" stroke-width="6" stroke-linecap="round"/><line x1="126" y1="32" x2="100" y2="56" stroke="#8a6316" stroke-width="6" stroke-linecap="round"/><rect x="38" y="56" width="124" height="90" rx="12" fill="#6b4a10"/><rect x="48" y="66" width="104" height="70" rx="8" fill="#0d1b40"/><polygon points="90,84 90,118 124,101" fill="#2fe86b"/><rect x="70" y="154" width="60" height="10" rx="5" fill="#6b4a10"/><circle cx="146" cy="150" r="5" fill="#ff5d5d"/></svg>`)},
+  dinner:{title:'Cosmic Diner',tag:'Simulasi Koki',desc:'Sajikan burger demi burger untuk astronot.',url:'https://spacediner.vercel.app/',
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#140f33"/><stop offset="1" stop-color="#2a1a52"/></linearGradient></defs><rect width="200" height="200" fill="url(#g4)"/><g fill="#fff"><circle cx="30" cy="40" r="2"/><circle cx="170" cy="28" r="2.5"/><circle cx="150" cy="170" r="2"/><circle cx="36" cy="160" r="1.5"/><circle cx="96" cy="24" r="1.5"/></g><circle cx="154" cy="50" r="14" fill="#f4d35e"/><ellipse cx="154" cy="50" rx="25" ry="6.5" fill="none" stroke="#a5ffc9" stroke-width="3" transform="rotate(-20 154 50)"/><path d="M58 104 Q60 70 100 70 Q140 70 142 104 Z" fill="#ffd28f"/><rect x="54" y="104" width="92" height="10" rx="5" fill="#7bc86c"/><rect x="56" y="114" width="88" height="12" rx="6" fill="#6b3f23"/><path d="M58 126 h84 q-4 22 -42 22 q-38 0 -42 -22z" fill="#ffd28f"/></svg>`)},
+  jelly:{title:'Jelly Jump',tag:'Arcade Seru',desc:'Lompatin si jelly dari platform ke platform.',url:'https://jelly.scottsun.io/',
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="g5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8be0f7"/><stop offset="1" stop-color="#2d6bb5"/></linearGradient></defs><rect width="200" height="200" fill="url(#g5)"/><rect x="118" y="122" width="56" height="12" rx="6" fill="#3fae5c"/><rect x="26" y="158" width="64" height="12" rx="6" fill="#3fae5c"/><path d="M64 86 C64 58 136 58 136 86 C136 112 124 130 100 130 C76 130 64 112 64 86 Z" fill="#ff2e88"/><ellipse cx="84" cy="84" rx="12" ry="16" fill="#fff" opacity=".5"/><circle cx="88" cy="90" r="6" fill="#fff"/><circle cx="114" cy="90" r="6" fill="#fff"/><circle cx="90" cy="92" r="3" fill="#26122b"/><circle cx="116" cy="92" r="3" fill="#26122b"/><path d="M92 106 q9 8 18 0" stroke="#26122b" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`)}
+};
+let builtinData={},cloudGames=[];
+const builtinOf=id=>({...BUILTIN_DEFAULTS[id],...(builtinData[id]||{})});
+const playIco='<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="6 3 20 12 6 21 6 3"/></svg>';
+
+function renderBuiltin(){
+  const g=$('#gridGames');
+  g.querySelectorAll('.gcard.builtin').forEach(x=>x.remove());
+  Object.keys(BUILTIN_DEFAULTS).forEach(id=>{
+    const d=builtinOf(id);
+    const el=document.createElement('article');el.className='gcard builtin';
+    const art=document.createElement('div');art.className='gc-art';
+    const img=new Image();img.src=d.icon;img.alt=d.title;art.appendChild(img);
+    const info=document.createElement('div');info.className='gc-info';
+    info.innerHTML=`<h4></h4><p></p><div class="gc-meta">${playIco}<span>dimainkan</span></div>`;
+    info.querySelector('h4').textContent=d.title;
+    info.querySelector('p').textContent=d.desc;
+    el.appendChild(art);el.appendChild(info);
+    el.onclick=()=>openGame(id);
+    g.prepend(el);
+  });
+  updateCount();
+}
+onSnapshot(doc(db,'config','builtin'),s=>{builtinData=s.data()||{};renderBuiltin()},()=>renderBuiltin());
+
+function renderCloud(){
+  const g=$('#gridGames');
+  g.querySelectorAll('.gcard.cloud').forEach(x=>x.remove());
+  const before=$('#cardUpload');
+  cloudGames.forEach(gm=>{
+    const el=document.createElement('article');el.className='gcard cloud';
+    const art=document.createElement('div');art.className='gc-art';
+    if(gm.icon){const i=new Image();i.src=gm.icon;art.appendChild(i)}
+    else{const hue=[...(gm.name||'x')].reduce((a,c)=>(a*31+c.charCodeAt(0))%360,7);art.style.background=`hsl(${hue} 40% 13%)`;const t=document.createElement('div');t.className='gi-letter';t.textContent=(gm.name||'?')[0].toUpperCase();art.appendChild(t)}
+    const info=document.createElement('div');info.className='gc-info';
+    info.innerHTML=`<span class="gc-tag">Komunitas</span><h4></h4><p></p><div class="gc-meta">${playIco}<span><b>${gm.plays||0}</b>&nbsp;dimainkan</span></div>`;
+    info.querySelector('h4').textContent=gm.name||'Tanpa nama';
+    info.querySelector('p').textContent='oleh '+(gm.author||'Anonim');
+    el.appendChild(art);el.appendChild(info);
+    el.onclick=()=>openGame(gm.id);
+    if(firebaseUser&&(isAdmin()||gm.uid===firebaseUser.uid)){
+      const del=document.createElement('button');del.className='gc-del';del.title='Hapus';
+      del.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>';
+      del.onclick=async e=>{e.stopPropagation();if(confirm('Hapus game ini?')){try{await deleteDoc(doc(db,'games',gm.id));toast('Game dihapus')}catch(err){toast('Gagal hapus','err')}}};
+      const ed=document.createElement('button');ed.className='gc-del gc-edit';ed.title='Edit';
+      ed.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>';
+      ed.onclick=e=>{e.stopPropagation();openUploadModal(gm.id)};
+      el.appendChild(del);el.appendChild(ed);
+    }
+    g.insertBefore(el,before);
+  });
+  updateCount();
+}
+onSnapshot(query(collection(db,'games'),orderBy('ts','desc'),limit(60)),s=>{cloudGames=s.docs.map(d=>({id:d.id,...d.data()}));renderCloud()},e=>console.warn(e.message));
+function updateCount(){$('#countGames').textContent=(Object.keys(BUILTIN_DEFAULTS).length+cloudGames.length)+' KONTEN'}
+
+/* ===== PLAYER ===== */
+let pTimer=null,lastSrc='',watchdog=null;
+function launchPlayer(title,url){
+  $('#pTitle').textContent=title;
+  $('#player').classList.remove('zen');
+  $('#player').hidden=false;$('#frameError').hidden=true;$('#zingLoader').style.display='flex';
+  document.body.classList.add('playing');
+  const f=$('#gameFrame');f.hidden=true;f.src='about:blank';
+  let sec=0;clearInterval(pTimer);pTimer=setInterval(()=>{sec++;$('#sessTime').textContent=String(Math.floor(sec/60)).padStart(2,'0')+':'+String(sec%60).padStart(2,'0')},1000);
+  let loaded=false;
+  f.onload=()=>{if(f.src==='about:blank')return;loaded=true;$('#zingLoader').style.display='none';f.hidden=false};
+  lastSrc=url;f.src=url;
+  clearTimeout(watchdog);
+  watchdog=setTimeout(()=>{if(!loaded){$('#zingLoader').style.display='none';$('#frameError').hidden=false}},10000);
+}
+function exitPlayer(){clearInterval(pTimer);clearTimeout(watchdog);$('#gameFrame').src='about:blank';$('#player').hidden=true;$('#player').classList.remove('zen');document.body.classList.remove('playing');enterHome()}
+function openGame(id){
+  if(!firebaseUser)return openLock(()=>openGame(id));
+  if(BUILTIN_DEFAULTS[id]){
+    const d=builtinOf(id);
+    if(!d.url)return toast('URL game belum diatur','err');
+    launchPlayer(d.title,d.url);
+    updateDoc(doc(db,'stats','plays'),{[id]:increment(1)}).catch(()=>{});
+  }else{
+    const gm=cloudGames.find(g=>g.id===id);if(!gm)return;
+    if(gm.type==='code'&&gm.code)launchPlayer(gm.name,URL.createObjectURL(new Blob([gm.code],{type:'text/html'})));
+    else{if(!gm.link)return toast('Game belum punya link','err');launchPlayer(gm.name,gm.link)}
+    updateDoc(doc(db,'games',gm.id),{plays:increment(1)}).catch(()=>{});
+  }
+}
+ $('#cardUpload').onclick=()=>{if(!firebaseUser)return openLock(()=>openUploadModal());openUploadModal()};
+ $('#btnBack').onclick=exitPlayer;
+ $('#btnZenBack').onclick=exitPlayer;
+ $('#btnZen').onclick=()=>{$('#player').classList.add('zen');document.documentElement.requestFullscreen?.().catch(()=>{})};
+ $('#btnZenExit').onclick=()=>{$('#player').classList.remove('zen');if(document.fullscreenElement)document.exitFullscreen().catch(()=>{})};
+ $('#btnFull').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else $('#player').requestFullscreen?.().catch(()=>{})};
+ $('#btnReload').onclick=()=>{if(lastSrc){$('#frameError').hidden=true;$('#zingLoader').style.display='flex';$('#gameFrame').src=lastSrc}};
+ $('#btnFrameRetry').onclick=()=>$('#btnReload').onclick();
+
+/* ===== CHAT ===== */
+let unsubChat=null,chatMsgs=[],lastSeen=+(localStorage.getItem('zing_seen')||0);
+function badge(){
+  const b=$('#chatBadge');b.hidden=unread<=0;if(unread>0)b.textContent=unread>9?'9+':unread;
+  const nb=$('#navChatBadge');nb.style.display=unread>0?'flex':'none';if(unread>0)nb.textContent=unread>9?'9+':unread;
+}
+function subChat(){
+  if(unsubChat)return;
+  unsubChat=onSnapshot(query(collection(db,'chat'),orderBy('ts','desc'),limit(60)),s=>{
+    chatMsgs=s.docs.map(d=>({id:d.id,...d.data()})).reverse();
+    renderChat();
+    if(currentScreen()==='screen-chat'){lastSeen=Date.now();localStorage.setItem('zing_seen',lastSeen);unread=0}
+    else unread=chatMsgs.filter(m=>m.uid!==firebaseUser?.uid&&(m.ts?.toMillis?.()||0)>lastSeen).length;
+    badge();
+  },e=>toast('Chat: '+(e.code||e.message),'err'));
+}
+function renderChat(){
+  const b=$('#chatMessages');b.textContent='';
+  chatMsgs.forEach(m=>{
+    const mine=m.uid===firebaseUser?.uid;
+    const row=document.createElement('div');row.className='chat-msg'+(mine?' me':'');
+    const av=document.createElement('div');av.className='cm-av';
+    if(m.av){const i=new Image();i.src=m.av;av.appendChild(i)}else av.textContent=(m.name||'?')[0].toUpperCase();
+    const c=document.createElement('div');c.className='cm-content';
+    const nm=document.createElement('div');nm.className='cm-name';nm.textContent=mine?'Kamu':(m.name||'Anonim');
+    const bb=document.createElement('div');bb.className='cm-bubble';bb.textContent=m.text||'';
+    c.appendChild(nm);c.appendChild(bb);row.appendChild(av);row.appendChild(c);b.appendChild(row);
+  });
+  b.scrollTop=b.scrollHeight;
+}
+function openChat(){if(!firebaseUser)return openLock(openChat);showWipe('screen-chat');subChat();unread=0;badge()}
+async function sendChat(){
+  const t=$('#chatInput').value.trim();if(!t||!firebaseUser)return;
+  $('#chatInput').value='';
+  try{await addDoc(collection(db,'chat'),{uid:firebaseUser.uid,name:userDoc?.name||'Anonim',av:userDoc?.av||'',text:t,ts:serverTimestamp()})}
+  catch(e){toast('Pesan gagal terkirim','err');$('#chatInput').value=t}
+}
+ $('#btnSend').onclick=sendChat;
+ $('#chatInput').onkeydown=e=>{if(e.key==='Enter')sendChat()};
+ $('#btnChat').onclick=openChat;
+ $('#btnBackChat').onclick=()=>enterHome();
+
+/* ===== UPLOAD / EDIT ===== */
+let upType='link',upIconData='',editingId=null;
+function setIconPrev(d){const p=$('#upIconPrev');p.textContent='';if(d){const i=new Image();i.src=d;p.appendChild(i)}else p.textContent='?'}
+function openUploadModal(editId=null){
+  editingId=editId;
+  if(editId){
+    const gm=cloudGames.find(g=>g.id===editId);if(!gm)return;
+    $('#upModalTitle').textContent='Edit Game';
+    $('#upName').value=gm.name||'';$('#upLink').value=gm.link||'';$('#upCode').value=gm.code||'';
+    upIconData=gm.icon||'';setIconPrev(upIconData);
+    upType=gm.type||'link';$('#btnPublish').textContent='Simpan Perubahan';
+  }else{
+    $('#upModalTitle').textContent='Unggah Game';
+    $('#upName').value='';$('#upLink').value='';$('#upCode').value='';
+    upIconData='';setIconPrev('');upType='link';$('#btnPublish').textContent='Publikasikan';
+  }
+  $$('#upSeg .seg-btn').forEach(x=>x.classList.toggle('active',x.dataset.k===upType));
+  $('#rowLink').hidden=upType!=='link';$('#rowCode').hidden=upType!=='code';
+  $('#uploadModal').hidden=false;
+}
+ $$('#upSeg .seg-btn').forEach(b=>b.onclick=()=>{upType=b.dataset.k;$$('#upSeg .seg-btn').forEach(x=>x.classList.toggle('active',x===b));$('#rowLink').hidden=upType!=='link';$('#rowCode').hidden=upType!=='code'});
+ $('#btnUploadCancel').onclick=()=>{$('#uploadModal').hidden=true;editingId=null};
+ $('#upIconClear').onclick=()=>{upIconData='';setIconPrev('')};
+ $('#upIcon').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{upIconData=await fileToDataURL(f,256);setIconPrev(upIconData)}catch(err){toast('Gagal memuat ikon','err')}};
+ $('#btnPublish').onclick=async()=>{
+  if(!firebaseUser)return openLock(()=>$('#btnPublish').click());
+  const name=$('#upName').value.trim();if(!name)return toast('Isi nama game dulu','err');
+  const payload={name,icon:upIconData,type:upType};
+  if(upType==='link'){
+    const link=$('#upLink').value.trim();
+    if(!/^https?:\/\//.test(link))return toast('URL tidak valid','err');
+    payload.link=link;payload.code='';
+  }else{
+    payload.code=$('#upCode').value;if(!payload.code.trim())return toast('Kode masih kosong','err');
+    payload.link='';
+  }
+  try{
+    if(editingId){await updateDoc(doc(db,'games',editingId),payload);toast('Game diperbarui')}
+    else{payload.uid=firebaseUser.uid;payload.author=userDoc?.name||'Anonim';payload.plays=0;payload.ts=serverTimestamp();await addDoc(collection(db,'games'),payload);toast('Game dipublikasikan')}
+    $('#uploadModal').hidden=true;editingId=null;
+  }catch(e){toast('Gagal: '+(e.code||e.message),'err')}
+};
+function fileToDataURL(file,size=256){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=e=>{const img=new Image();img.onload=()=>{const c=document.createElement('canvas');const k=Math.min(size/img.width,size/img.height,1);c.width=Math.max(1,Math.round(img.width*k));c.height=Math.max(1,Math.round(img.height*k));c.getContext('2d').drawImage(img,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',.82))};img.onerror=rej;img.src=e.target.result};
+    r.onerror=rej;r.readAsDataURL(file);
+  });
+}
+
+/* ===== SETTINGS & ADMIN ===== */
+let tmpAv='',adminIcon='';
+function openSettings(){
+  if(!firebaseUser)return;
+  $('#setName').value=userDoc?.name||firebaseUser.displayName||'';
+  tmpAv=userDoc?.av||'';
+  const p=$('#setAvatarPrev');p.textContent='';
+  if(tmpAv){const i=new Image();i.src=tmpAv;p.appendChild(i)}else p.textContent='?';
+  $('#adminSection').hidden=!isAdmin();
+  if(isAdmin())loadAdminForm();
+  $('#settingsModal').hidden=false;
+}
+ $('#btnCloseSettings').onclick=()=>$('#settingsModal').hidden=true;
+ $('#setAvatarClear').onclick=()=>{tmpAv='';const p=$('#setAvatarPrev');p.textContent='?'};
+ $('#setAvatar').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{tmpAv=await fileToDataURL(f,256);const p=$('#setAvatarPrev');p.textContent='';const i=new Image();i.src=tmpAv;p.appendChild(i)}catch(err){toast('Gagal memuat foto','err')}};
+ $('#btnSaveProfile').onclick=async()=>{
+  if(!firebaseUser)return;
+  const name=$('#setName').value.trim()||'Pemain';
+  userDoc={...(userDoc||{}),name,av:tmpAv};
+  try{await setDoc(doc(db,'users',firebaseUser.uid),{name,av:tmpAv},{merge:true});toast('Profil tersimpan');$('#settingsModal').hidden=true;renderTop()}
+  catch(e){toast('Gagal simpan: '+(e.code||e.message),'err')}
+};
+function loadAdminForm(){
+  const id=$('#adminGameSelect').value;
+  const d=builtinOf(id);
+  $('#adminTitle').value=d.title;$('#adminDesc').value=d.desc;$('#adminGameUrl').value=d.url;
+  adminIcon=d.icon;
+  const p=$('#adminIconPrev');p.textContent='';const i=new Image();i.src=adminIcon;p.appendChild(i);
+}
+ $('#adminGameSelect').onchange=loadAdminForm;
+ $('#adminIconFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{adminIcon=await fileToDataURL(f,256);const p=$('#adminIconPrev');p.textContent='';const i=new Image();i.src=adminIcon;p.appendChild(i)}catch(err){toast('Gagal memuat ikon','err')}};
+ $('#btnSaveAdminGame').onclick=async()=>{
+  const id=$('#adminGameSelect').value;
+  const url=$('#adminGameUrl').value.trim();
+  if(!/^https?:\/\//.test(url))return toast('URL tidak valid','err');
+  try{
+    await setDoc(doc(db,'config','builtin'),{[id]:{title:$('#adminTitle').value.trim(),desc:$('#adminDesc').value.trim(),url,icon:adminIcon}},{merge:true});
+    toast('Game bawaan diperbarui untuk semua pemain');
+  }catch(e){toast('Gagal simpan: '+(e.code||e.message),'err')}
+};
+
+/* ===== ZING AI (via Netlify Function proxy) ===== */
+async function aiCall(mode,payload){
+  let r;
+  try{
+    r=await fetch('/.netlify/functions/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode,...payload})});
+  }catch(e){
+    throw new Error('Tidak bisa terhubung ke server AI. Periksa koneksi internetmu.');
+  }
+  if(r.status===404)throw new Error('Fungsi AI belum terpasang. Deploy netlify/functions/ai.js lewat GitHub atau Netlify CLI (drag-and-drop tidak menjalankan functions).');
+  const j=await r.json().catch(()=>null);
+  if(!r.ok)throw new Error(j?.error||('HTTP '+r.status));
+  return j;
+}
+async function callAI(messages){
+  const j=await aiCall('chat',{messages});
+  const c=j?.choices?.[0]?.message?.content;
+  if(!c)throw new Error('Respons AI kosong. Coba lagi.');
+  return c;
+}
+async function callImg(prompt){
+  const j=await aiCall('image',{prompt});
+  const d=j?.data?.[0];
+  const u=d?.url||(d?.b64_json?'data:image/png;base64,'+d.b64_json:null);
+  if(!u)throw new Error('Gagal membuat gambar. Coba prompt lain.');
+  return u;
+}
+
+let aiTab='image',aiBusy=false,aiHist=[];
+try{aiHist=JSON.parse(localStorage.getItem('zing_ai_hist')||'[]')}catch(e){}
+function saveHist(){try{localStorage.setItem('zing_ai_hist',JSON.stringify(aiHist.slice(-40)))}catch(e){}}
+const AI_SYS={
+  image:'Kamu Zing AI di portal game Zing. Bahasa Indonesia santai. Bantu pengguna menyusun prompt gambar yang deskriptif dan bagus.',
+  code:'Kamu adalah Zing AI. Buat kode HTML lengkap siap jalan dalam satu blok ```html ... ```. Tanpa placeholder, tanpa API berbayar. Setelah kode, tulis 1-2 kalimat penjelasan.',
+  agent:'Kamu adalah Zing AI Agent. Perbaiki kode pengguna: bug, tampilan, performa HP & PC, fitur yang diminta. SELALU balas dengan file final lengkap dalam satu blok ```html ... ```.'
+};
+function openAI(){showWipe('screen-ai');renderAI()}
+ $('#btnBackAI').onclick=()=>enterHome();
+ $$('.ai-tab').forEach(b=>b.onclick=()=>{aiTab=b.dataset.mode;$$('.ai-tab').forEach(x=>x.classList.toggle('active',x===b));renderAI()});
+
+async function sendAI(){
+  const inp=$('#aiInput');const t=inp.value.trim();
+  if(!t||aiBusy)return;if(!firebaseUser)return openLock(sendAI);
+  aiBusy=true;$('#aiSend').disabled=true;inp.value='';inp.style.height='auto';
+  aiHist.push({role:'user',text:t});renderAI();
+  try{
+    let out;
+    if(aiTab==='image')out='@@IMG:'+await callImg(t);
+    else out=await callAI([{role:'system',content:AI_SYS[aiTab]},...aiHist.filter(m=>m.text&&!m.text.startsWith('@@IMG')).slice(-8).map(m=>({role:m.role,content:m.text}))]);
+    aiHist.push({role:'assistant',text:out});
+  }catch(e){
+    toast('Zing AI: '+e.message,'err');
+    aiHist.push({role:'assistant',text:e.message});
+  }
+  saveHist();
+  aiBusy=false;$('#aiSend').disabled=false;renderAI();
+}
+ $('#aiSend').onclick=sendAI;
+ $('#aiInput').onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI()}};
+ $('#aiInput').oninput=e=>{e.target.style.height='auto';e.target.style.height=Math.min(140,e.target.scrollHeight)+'px'};
+
+function buildAIContent(text,parent,isUser){
+  const parts=text.split(/```(?:\w+)?\n?([\s\S]*?)```/g);
+  parts.forEach((seg,i)=>{
+    if(i%2===1&&!isUser){
+      const cb=document.createElement('div');cb.className='ai-code';
+      const bar=document.createElement('div');bar.className='ai-code-bar';
+      const mkBtn=(label,fn)=>{const b=document.createElement('button');b.textContent=label;b.onclick=fn;bar.appendChild(b)};
+      mkBtn('Salin',()=>navigator.clipboard.writeText(seg).then(()=>toast('Kode disalin')).catch(()=>{}));
+      mkBtn('Uji',()=>launchPlayer('Pratinjau AI',URL.createObjectURL(new Blob([seg],{type:'text/html'}))));
+      mkBtn('Jadi Game',async()=>{
+        try{await addDoc(collection(db,'games'),{name:'Game AI — '+(userDoc?.name||'Pemain').split(' ')[0],code:seg,link:'',type:'code',icon:'',uid:firebaseUser.uid,author:userDoc?.name||'Anonim',plays:0,ts:serverTimestamp()});toast('Game AI masuk ke lobi')}
+        catch(e){toast('Gagal publikasi','err')}
+      });
+      const pre=document.createElement('pre');pre.textContent=seg;
+      cb.appendChild(bar);cb.appendChild(pre);parent.appendChild(cb);
+    }else if(seg.trim()){
+      const c=document.createElement('div');c.className='ai-content';
+      c.style.whiteSpace='pre-wrap';c.textContent=seg.trim();parent.appendChild(c);
+    }
+  });
+}
+function renderAI(){
+  const b=$('#aiBody');b.textContent='';
+  if(!aiHist.length&&!aiBusy){
+    b.innerHTML=`<div style="margin:auto 0;padding:24px 4px;max-width:460px">
+      <div style="display:inline-flex;padding:14px;background:#14271b;border:1px solid #304434;border-radius:20px;margin-bottom:14px">${robotSVG(70)}</div>
+      <h3 style="font-family:var(--disp);font-weight:800;font-size:25px;margin-bottom:8px">Zing AI siap membantu</h3>
+      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon game, minta kode game HTML lengkap, atau tempel kodemu di tab Agent dan minta versi yang lebih baik. Hasil kode bisa langsung diuji atau dijadikan game di lobi.</p>
+    </div>`;
+    return;
+  }
+  aiHist.forEach(m=>{
+    if(m.text.startsWith('@@IMG:')){
+      const d=document.createElement('div');d.className='ai-msg bot';
+      d.innerHTML='<div class="ai-role">Zing AI</div>';
+      const wrap=document.createElement('div');wrap.className='ai-img-result';
+      const img=new Image();img.src=m.text.slice(6);img.alt='Hasil gambar';
+      const dl=document.createElement('button');dl.className='btn btn-ghost';dl.style.padding='8px 14px';dl.style.fontSize='12px';dl.textContent='Buka / Unduh';
+      dl.onclick=()=>window.open(m.text.slice(6),'_blank','noopener');
+      wrap.appendChild(img);wrap.appendChild(dl);
+      d.appendChild(wrap);b.appendChild(d);return;
+    }
+    const d=document.createElement('div');d.className='ai-msg '+(m.role==='user'?'user':'bot');
+    const r=document.createElement('div');r.className='ai-role';r.textContent=m.role==='user'?'Kamu':'Zing AI';
+    d.appendChild(r);
+    buildAIContent(m.text,d,m.role==='user');
+    b.appendChild(d);
+  });
+  if(aiBusy){
+    const d=document.createElement('div');d.className='ai-msg bot';
+    d.innerHTML=`<div class="ai-role">Zing AI</div><div class="ai-loader">${robotSVG(26)}<span>thinking</span></div>`;
+    b.appendChild(d);
+  }
+  b.scrollTop=b.scrollHeight;
+}
+
+setInterval(()=>{$('#clock').textContent=new Date().toLocaleTimeString('id-ID')},1000);
+</script>
+</body>
+</html>
