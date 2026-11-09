@@ -1,2 +1,5 @@
 # Zing
-A zing projects is development now
+Zing play or publish game.
+# Link 
+Coming soon
+
