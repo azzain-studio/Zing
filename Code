@@ -34,8 +34,8 @@ button{font-family:inherit;color:inherit}svg{display:block}
 #wipe.run{animation:wipePass .9s cubic-bezier(.7,0,.2,1) both}
 .robot{overflow:visible}.robot .eyes{transform-origin:50px 50px;animation:blink 5s infinite}
 .center-wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;height:100%;text-align:center;padding:20px}
-.wordmark{font-family:var(--disp);font-weight:800;font-size:46px;letter-spacing:-.03em;display:flex;align-items:baseline;gap:8px}
-.wordmark>span:first-child{background:linear-gradient(120deg,#eafff2 30%,#8dffb8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wordmark{font-family:var(--disp);font-weight:800;font-size:46px;letter-spacing:-.03em;display:flex;align-items:baseline;gap:8px;line-height:1.15;padding-bottom:4px}
+.wordmark>span:first-child{background:linear-gradient(120deg,#eafff2 30%,#8dffb8);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 .05em}
 .wordmark .v2{font-size:14px;font-weight:700;color:#04180b;background:var(--green);border-radius:6px;padding:3px 8px;transform:translateY(-6px);box-shadow:0 0 22px rgba(47,232,107,.35)}
 .tagline{font-size:11px;letter-spacing:.4em;color:var(--mut);text-transform:uppercase}
 .bar{width:240px;height:5px;border-radius:4px;background:rgba(47,232,107,.1);overflow:hidden;position:relative}
@@ -61,7 +61,7 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .mode-card .mc-ico{color:var(--green);display:flex}
 .mode-card b{font-family:var(--disp);font-size:17px}
 .mode-card .mc-sub{font-size:12px;color:var(--mut)}
-.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(7,11,9,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.25)}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(7,11,9,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand .wordmark{font-size:22px}
 .brand .wordmark .v2{box-shadow:none}
@@ -72,16 +72,17 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .user-chip span{font-size:14px;font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .home-main{width:min(1100px,92vw);margin:0 auto;padding:30px 0 90px}
-.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
+.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px;flex-wrap:wrap}
 .hello h1{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4vw,38px)}
 .hello h1 em{font-style:normal;background:linear-gradient(120deg,#2fe86b,#a5ffc9);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hello p{color:var(--mut);margin-top:6px;font-size:14px}
 .clock-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 16px;color:var(--mut);font-size:13px;background:var(--panel)}
-.promo{margin:0 0 6px;padding:18px 22px;display:flex;align-items:center;gap:14px;justify-content:space-between;background:linear-gradient(120deg,rgba(47,232,107,.16),rgba(13,28,18,.4));border:1px solid var(--line2);border-radius:20px;flex-wrap:wrap;backdrop-filter:blur(8px)}
-.promo h3{font-family:var(--disp);font-weight:800;font-size:19px}
+.promo{margin:0 0 6px;padding:16px 20px;display:flex;align-items:center;gap:14px;justify-content:space-between;background:linear-gradient(120deg,rgba(47,232,107,.16),rgba(13,28,18,.4));border:1px solid var(--line2);border-radius:18px;flex-wrap:wrap;backdrop-filter:blur(8px)}
+.promo h3{font-family:var(--disp);font-weight:800;font-size:18px}
 .promo em{color:var(--green);font-style:normal}
 .promo p{color:var(--mut);font-size:13px;margin-top:4px}
-.section-head{display:flex;align-items:center;gap:14px;margin:26px 0 16px}
+.promo .btn{flex:none}
+.section-head{display:flex;align-items:center;gap:14px;margin:24px 0 14px}
 .section-head h3{font-family:var(--disp);font-weight:800;font-size:18px}
 .section-head i{flex:1;height:1px;background:var(--line)}
 .section-head b{font-size:11px;color:var(--mut);letter-spacing:.15em}
@@ -102,11 +103,11 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .gcard.upload h4{font-family:var(--disp);font-weight:800;font-size:17px}
 .gcard.upload p{font-size:12px}
 .up-plus{width:48px;height:48px;border-radius:50%;border:2px dashed var(--line2);display:flex;align-items:center;justify-content:center;color:var(--green)}
-.gc-del{position:absolute;top:10px;right:10px;z-index:4;width:30px;height:30px;border-radius:9px;border:1px solid var(--line2);background:rgba(7,17,11,.85);color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gc-del{position:absolute;top:10px;right:10px;z-index:4;width:32px;height:32px;border-radius:9px;border:1px solid var(--line2);background:rgba(7,17,11,.88);color:var(--mut);cursor:pointer;display:flex;align-items:center;justify-content:center}
 .gc-del:hover{color:var(--red);border-color:var(--red)}
-.gc-edit{right:48px}.gc-edit:hover{color:var(--green);border-color:var(--green)}
+.gc-edit{right:50px}.gc-edit:hover{color:var(--green);border-color:var(--green)}
 .gc-actions{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap}
-.gc-act{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:99px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--mut);cursor:pointer;transition:.15s}
+.gc-act{display:inline-flex;align-items:center;gap:6px;background:none;border:1px solid var(--line);border-radius:99px;padding:7px 12px;font-size:12px;font-weight:600;color:var(--mut);cursor:pointer;transition:.15s}
 .gc-act:hover{border-color:var(--green);color:var(--green)}
 .gc-act.liked{color:var(--red);border-color:rgba(255,93,93,.45)}
 .gc-act svg{flex:none}
@@ -198,27 +199,33 @@ button{font-family:inherit;color:inherit}svg{display:block}
 /* ===== MODE HP ===== */
 body[data-mode="hp"] .top{padding:10px 14px}
 body[data-mode="hp"] .brand .wordmark{font-size:18px}
-body[data-mode="hp"] .home-main{width:100%;max-width:600px;padding:14px 12px 24px}
-body[data-mode="hp"] .hello{margin-bottom:12px}
+body[data-mode="hp"] .home-main{width:100%;max-width:640px;padding:14px 12px calc(100px + env(safe-area-inset-bottom))}
+body[data-mode="hp"] .hello{margin-bottom:12px;gap:10px}
 body[data-mode="hp"] .hello h1{font-size:21px}
+body[data-mode="hp"] .hello p{font-size:12px}
 body[data-mode="hp"] .clock-chip{display:none}
-body[data-mode="hp"] .promo{padding:14px 16px}
-body[data-mode="hp"] .promo h3{font-size:16px}
-body[data-mode="hp"] .section-head{margin:14px 0 10px}
+body[data-mode="hp"] .promo{padding:14px 16px;border-radius:16px}
+body[data-mode="hp"] .promo h3{font-size:15px}
+body[data-mode="hp"] .promo p{font-size:11.5px}
+body[data-mode="hp"] .promo .btn{padding:10px 14px;font-size:12.5px}
+body[data-mode="hp"] .section-head{margin:16px 0 10px}
+body[data-mode="hp"] .section-head h3{font-size:16px}
 body[data-mode="hp"] .grid-games{grid-template-columns:repeat(2,1fr);gap:12px}
 body[data-mode="hp"] .gcard{border-radius:16px}
 body[data-mode="hp"] .gc-art{aspect-ratio:1/1}
-body[data-mode="hp"] .gc-info{padding:10px 10px 12px;gap:6px;align-items:center}
-body[data-mode="hp"] .gc-info h4{font-size:13px;text-align:center;width:100%}
+body[data-mode="hp"] .gc-info{padding:10px 10px 8px;gap:4px;align-items:center}
+body[data-mode="hp"] .gc-info h4{font-size:14px;text-align:center;width:100%}
 body[data-mode="hp"] .gc-info p,body[data-mode="hp"] .gc-tag,body[data-mode="hp"] .gc-meta{display:none}
-body[data-mode="hp"] .gc-actions{margin-top:0;padding:0 4px 4px;justify-content:center;gap:4px;flex-wrap:nowrap}
-body[data-mode="hp"] .gc-act{padding:6px 9px;font-size:0;gap:0;border-radius:12px}
-body[data-mode="hp"] .gc-act svg{width:15px;height:15px;margin:0}
+body[data-mode="hp"] .gc-actions{margin-top:2px;padding:0 2px 6px;justify-content:center;gap:6px;flex-wrap:nowrap}
+body[data-mode="hp"] .gc-act{padding:8px 12px;font-size:0;gap:0;border-radius:12px}
+body[data-mode="hp"] .gc-act svg{width:16px;height:16px;margin:0}
 body[data-mode="hp"] .gc-act .n{display:none}
 body[data-mode="hp"] .gcard.upload{min-height:0;aspect-ratio:1/1;padding:10px;gap:8px}
-body[data-mode="hp"] .gcard.upload h4{font-size:12.5px}
+body[data-mode="hp"] .gcard.upload h4{font-size:13px}
 body[data-mode="hp"] .gcard.upload p{display:none}
-body[data-mode="hp"] .up-plus{width:36px;height:36px}
+body[data-mode="hp"] .up-plus{width:40px;height:40px}
+body[data-mode="hp"] .gc-del{top:8px;right:8px}
+body[data-mode="hp"] .gc-edit{right:48px}
 body[data-mode="hp"] .home-foot,body[data-mode="hp"] .chat-fab{display:none}
 body[data-mode="hp"][data-screen="screen-home"] .bottom-nav,
 body[data-mode="hp"][data-screen="screen-chat"] .bottom-nav,
@@ -228,7 +235,7 @@ body[data-mode="hp"] #screen-chat,body[data-mode="hp"] #screen-ai{padding-bottom
 body[data-mode="hp"] .chat-full-body,body[data-mode="hp"] .ai-body{padding:14px 12px}
 body[data-mode="hp"] .chat-full-foot,body[data-mode="hp"] .ai-input-bar{padding:10px 12px}
 body[data-mode="hp"] .ai-tabs{padding:10px 12px 0}
-body[data-mode="hp"] .ai-tab{flex:1;padding:10px 6px;font-size:12px}
+body[data-mode="hp"] .ai-tab{flex:1;padding:11px 6px;font-size:12px}
 body[data-mode="hp"] .chat-msg,body[data-mode="hp"] .ai-msg{max-width:100%}
 body[data-mode="hp"] .modal{padding:0;align-items:flex-end}
 body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-height:86vh;padding:18px 16px calc(18px + env(safe-area-inset-bottom))}
@@ -422,7 +429,7 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
     <h3 id="upModalTitle" style="text-align:left">Unggah Game</h3>
     <div class="form-grid" style="margin-top:14px">
       <div><label class="f-label">Nama game</label><input class="f-input" id="upName" maxlength="40"></div>
-      <div><label class="f-label">Ikon (opsional)</label>
+      <div id="upIconAdmin" hidden><label class="f-label">Ikon (khusus Admin)</label>
         <div class="icon-pick">
           <div class="icon-prev" id="upIconPrev">?</div>
           <div style="flex:1;display:flex;flex-direction:column;gap:8px">
@@ -553,12 +560,12 @@ async function ensureUserDoc(u){
     const d=await getDoc(doc(db,'users',u.uid));
     if(d.exists()){userDoc=d.data()}
     else{
-      userDoc={name:u.displayName||pendingAnonName||'Pemain',av:'',named:!!(pendingAnonName||u.displayName)};
+      userDoc={name:u.displayName||pendingAnonName||'Pemain',av:''};
       await setDoc(doc(db,'users',u.uid),{...userDoc,createdAt:serverTimestamp()});
     }
     if(pendingAnonName&&u.displayName==null){
-      userDoc={...(userDoc||{}),name:pendingAnonName,named:true};
-      await setDoc(doc(db,'users',u.uid),{name:pendingAnonName,named:true},{merge:true});
+      userDoc={...(userDoc||{}),name:pendingAnonName};
+      await setDoc(doc(db,'users',u.uid),{name:pendingAnonName},{merge:true});
     }
   }catch(e){userDoc={name:u.displayName||pendingAnonName||'Pemain',av:''}}
   pendingAnonName='';
@@ -592,7 +599,6 @@ function renderNavProfile(){
   else{b.onclick=()=>showWipe('screen-login');$('#navProfileLbl').textContent='Masuk'}
 }
 
-/* Buka game dari link share: ?game=<id> (satu file, tanpa 404 router) */
 let pendingGame=null;
 try{pendingGame=new URLSearchParams(location.search).get('game')}catch(e){}
 
@@ -612,8 +618,15 @@ function enterHome(){
  $$('.mode-card').forEach(b=>b.onclick=()=>{document.body.dataset.mode=b.dataset.mode;localStorage.setItem('zing_mode',b.dataset.mode);runSplash()});
  $('#btnChangeMode').onclick=()=>showWipe('screen-mode');
  $('#btnMode2').onclick=()=>{$('#settingsModal').hidden=true;showWipe('screen-mode')};
+/* Mode otomatis: HP/PC dideteksi sekali, tidak menampilkan picker saat masuk */
 const savedMode=localStorage.getItem('zing_mode');
-if(savedMode){document.body.dataset.mode=savedMode;runSplash()}else show('screen-mode');
+if(savedMode){document.body.dataset.mode=savedMode;runSplash()}
+else{
+  const isMobile=matchMedia('(pointer:coarse)').matches||innerWidth<768;
+  document.body.dataset.mode=isMobile?'hp':'pc';
+  localStorage.setItem('zing_mode',document.body.dataset.mode);
+  runSplash();
+}
 
 function runSplash(){
   show('screen-splash');
@@ -702,7 +715,7 @@ function renderCloud(){
 onSnapshot(query(collection(db,'games'),orderBy('ts','desc'),limit(60)),s=>{cloudGames=s.docs.map(d=>({id:d.id,...d.data()}));renderCloud()},e=>console.warn(e.message));
 function updateCount(){$('#countGames').textContent=(Object.keys(BUILTIN_DEFAULTS).length+cloudGames.length)+' KONTEN'}
 
-/* ===== SOSIAL: like, komentar, share (?game=<id>) ===== */
+/* ===== SOSIAL ===== */
 const heartSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
 const cmtSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
 const shareSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
@@ -906,6 +919,7 @@ let upType='link',upIconData='',editingId=null;
 function setIconPrev(d){const p=$('#upIconPrev');p.textContent='';if(d){const i=new Image();i.src=d;p.appendChild(i)}else p.textContent='?'}
 function openUploadModal(editId=null){
   editingId=editId;
+  $('#upIconAdmin').hidden=!isAdmin();
   if(editId){
     const gm=cloudGames.find(g=>g.id===editId);if(!gm)return;
     $('#upModalTitle').textContent='Edit Game';
@@ -928,7 +942,7 @@ function openUploadModal(editId=null){
  $('#btnPublish').onclick=async()=>{
   if(!firebaseUser)return openLock(()=>$('#btnPublish').click());
   const name=$('#upName').value.trim();if(!name)return toast('Isi nama game dulu','err');
-  const payload={name,icon:upIconData,type:upType};
+  const payload={name,icon:isAdmin()?upIconData:'',type:upType};
   if(upType==='link'){
     const link=$('#upLink').value.trim();
     if(!/^https?:\/\//.test(link))return toast('URL tidak valid','err');
@@ -992,23 +1006,42 @@ function loadAdminForm(){
   }catch(e){toast('Gagal simpan: '+(e.code||e.message),'err')}
 };
 
-/* ===== ZING AI — murni Pollinations, tanpa function, tanpa API key ===== */
+/* ===== ZING AI — Pollinations, timeout keras: tidak ada "thinking" abadi ===== */
 const AI_SYS={
   image:'Kamu Zing AI di portal game Zing. Bahasa Indonesia santai. Bantu pengguna menyusun prompt gambar yang deskriptif dan bagus.',
-  code:'Kamu adalah Zing AI. Buat kode HTML lengkap siap jalan dalam satu blok ```html ... ```. Tanpa placeholder, tanpa API berbayar. Setelah kode, tulis 1-2 kalimat penjelasan.',
-  agent:'Kamu adalah Zing AI Agent. Perbaiki kode pengguna: bug, tampilan, performa HP & PC, fitur yang diminta. SELALU balas dengan file final lengkap dalam satu blok ```html ... ```.'
+  code:'Kamu adalah Zing AI, pembuat game di portal Zing. Buat SATU file HTML game lengkap dan siap main. WAJIB: tag <title> berisi nama game; tampilan cantik bertema gelap-hijau; kontrol keyboard (panah/WASD/spasi) DAN tombol sentuh on-screen agar bisa dimainkan di HP; ada skor dan tombol Mulai Ulang; tanpa placeholder, tanpa API berbayar. Jawab dalam bahasa Indonesia: satu blok kode ```html ...``` lalu maksimal 2 kalimat penjelasan.',
+  agent:'Kamu adalah Zing AI Agent, ahli perbaikan game HTML. Perbaiki kode pengguna: bug, tampilan, performa HP & PC, fitur yang diminta. WAJIB kembalikan file final lengkap dan siap main dalam satu blok ```html ...``` (jangan potong-potong). Sebelum kode, tulis maksimal 3 poin perubahan dengan tanda "-".'
 };
+function fetchTO(url,opts,ms){
+  const c=new AbortController();
+  const t=setTimeout(()=>c.abort(),ms);
+  return fetch(url,opts?{...opts,signal:c.signal}:{signal:c.signal}).finally(()=>clearTimeout(t));
+}
+async function aiText(sys,prompt){
+  /* Jalur 1: GET (cepat & stabil untuk prompt pendek) */
+  if(prompt.length<1400){
+    try{
+      const url='https://text.pollinations.ai/'+encodeURIComponent(prompt)+'?model=openai&system='+encodeURIComponent(sys);
+      const r=await fetchTO(url,null,45000);
+      if(r.ok){const c=await r.text();if(c&&c.trim().length>3)return c;}
+    }catch(e){}
+  }
+  /* Jalur 2: POST (untuk prompt panjang / cadangan) */
+  const r=await fetchTO('https://text.pollinations.ai/openai',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'openai',messages:[{role:'system',content:sys},{role:'user',content:prompt}]})
+  },60000);
+  if(!r.ok)throw new Error('HTTP '+r.status+' — server AI sibuk, coba lagi 1 menit');
+  const j=await r.json().catch(()=>null);
+  const c=j?.choices?.[0]?.message?.content;
+  if(!c||c.trim().length<10)throw new Error('Respons kosong, coba lagi');
+  return c;
+}
 async function callAI(messages){
   const sys=AI_SYS[aiTab];
   const last=messages[messages.length-1]?.content||'halo';
-  const hist=messages.slice(0,-1).filter(m=>m.role==='user').slice(-3).map(m=>'- '+m.content).join('\n');
-  const prompt=(hist?hist+'\n\nPermintaan:\n':'')+last;
-  const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:sys},{role:'user',content:prompt}]})});
-  if(!r.ok)throw new Error('HTTP '+r.status+' — server AI sedang sibuk, coba lagi 1 menit');
-  const j=await r.json().catch(()=>null);
-  const c=j?.choices?.[0]?.message?.content;
-  if(!c||c.trim().length<2)throw new Error('Respons kosong, coba lagi');
-  return c;
+  const hist=messages.slice(0,-1).filter(m=>m.role==='user').slice(-2).map(m=>'- '+m.content).join('\n');
+  return await aiText(sys,(hist?hist+'\n\nPermintaan:\n':'')+last);
 }
 function callImgUrl(prompt){
   return 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=768&height=768&nologo=true&enhance=true&seed='+Math.floor(Math.random()*1e6);
@@ -1017,7 +1050,7 @@ async function callImg(prompt){
   const u=callImgUrl(prompt);
   await new Promise((res,rej)=>{
     const i=new Image();
-    const t=setTimeout(()=>rej(new Error('Timeout membuat gambar, coba lagi')),60000);
+    const t=setTimeout(()=>rej(new Error('Timeout 60 detik — coba lagi')),60000);
     i.onload=()=>{clearTimeout(t);res()};
     i.onerror=()=>{clearTimeout(t);rej(new Error('Gagal membuat gambar, coba prompt lain'))};
     i.src=u;
@@ -1027,9 +1060,9 @@ async function callImg(prompt){
  $('#aiDiag').onclick=async()=>{
   toast('Menguji Zing AI...','ok');
   try{
-    const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'user',content:'balas satu kata: ok'}]})});
-    toast(r.ok?'Zing AI terhubung (HTTP '+r.status+')':'Server menolak: HTTP '+r.status,r.ok?'ok':'err');
-  }catch(e){toast('Tidak bisa terhubung: '+e.message,'err')}
+    const c=await aiText('Balas sangat singkat.','balas satu kata: ok');
+    toast('Zing AI terhubung: '+c.trim().slice(0,30),'ok');
+  }catch(e){toast('Zing AI: '+e.message,'err')}
 };
 
 let aiTab='image',aiBusy=false,aiHist=[];
@@ -1043,16 +1076,20 @@ async function sendAI(){
   const inp=$('#aiInput');const t=inp.value.trim();
   if(!t||aiBusy)return;if(!firebaseUser)return openLock(sendAI);
   aiBusy=true;$('#aiSend').disabled=true;inp.value='';inp.style.height='auto';
-  aiHist.push({role:'user',text:t});renderAI();
+  aiHist.push({role:'user',text:t,src:t});renderAI();
+  const guard=setTimeout(()=>{
+    if(aiBusy){aiBusy=false;$('#aiSend').disabled=false;toast('Terlalu lama, kirim ulang ya','err');renderAI()}
+  },120000);
   try{
     let out;
     if(aiTab==='image')out='@@IMG:'+await callImg(t);
     else out=await callAI([{role:'system',content:AI_SYS[aiTab]},...aiHist.filter(m=>m.text&&!m.text.startsWith('@@IMG')).slice(-8).map(m=>({role:m.role,content:m.text}))]);
-    aiHist.push({role:'assistant',text:out});
+    aiHist.push({role:'assistant',text:out,src:t});
   }catch(e){
     toast('Zing AI: '+e.message,'err');
-    aiHist.push({role:'assistant',text:e.message});
+    aiHist.push({role:'assistant',text:e.message,src:t});
   }
+  clearTimeout(guard);
   saveHist();
   aiBusy=false;$('#aiSend').disabled=false;renderAI();
 }
@@ -1073,7 +1110,7 @@ async function urlToData(u){
     });
   }
 }
-function buildAIContent(text,parent,isUser){
+function buildAIContent(text,parent,isUser,src){
   const parts=text.split(/```(?:\w+)?\n?([\s\S]*?)```/g);
   parts.forEach((seg,i)=>{
     if(i%2===1&&!isUser){
@@ -1081,9 +1118,10 @@ function buildAIContent(text,parent,isUser){
       const bar=document.createElement('div');bar.className='ai-code-bar';
       const mkBtn=(label,fn)=>{const b=document.createElement('button');b.textContent=label;b.onclick=fn;bar.appendChild(b)};
       mkBtn('Salin',()=>navigator.clipboard.writeText(seg).then(()=>toast('Kode disalin')).catch(()=>{}));
-      mkBtn('Uji',()=>launchPlayer('Pratinjau AI',URL.createObjectURL(new Blob([seg],{type:'text/html'}))));
-      mkBtn('Jadi Game',async()=>{
-        try{await addDoc(collection(db,'games'),{name:'Game AI — '+(userDoc?.name||'Pemain').split(' ')[0],code:seg,link:'',type:'code',icon:'',uid:firebaseUser.uid,author:userDoc?.name||'Anonim',plays:0,ts:serverTimestamp()});toast('Game AI masuk ke lobi')}
+      mkBtn('Uji Sekarang',()=>launchPlayer('Pratinjau AI',URL.createObjectURL(new Blob([seg],{type:'text/html'}))));
+      mkBtn('Jadi Game di Lobi',async()=>{
+        const nm=(src||'Game AI').slice(0,30);
+        try{await addDoc(collection(db,'games'),{name:nm,code:seg,link:'',type:'code',icon:'',uid:firebaseUser.uid,author:userDoc?.name||'Anonim',plays:0,ts:serverTimestamp()});toast('"'+nm+'" masuk ke lobi')}
         catch(e){toast('Gagal publikasi','err')}
       });
       const pre=document.createElement('pre');pre.textContent=seg;
@@ -1100,7 +1138,7 @@ function renderAI(){
     b.innerHTML=`<div style="margin:auto 0;padding:24px 4px;max-width:460px">
       <div style="display:inline-flex;padding:14px;background:#14271b;border:1px solid #304434;border-radius:20px;margin-bottom:14px">${robotSVG(70)}</div>
       <h3 style="font-family:var(--disp);font-weight:800;font-size:25px;margin-bottom:8px">Zing AI siap membantu</h3>
-      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon game, minta kode game HTML lengkap, atau tempel kodemu di tab Agent dan minta versi yang lebih baik. Kalau ragu, klik badge BETA di atas untuk mengetes koneksi.</p>
+      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon, minta game HTML siap main (tab Kode), atau tempel kodemu di tab Agent. Ada batas waktu 1 menit — kalau gagal, pesan errornya langsung muncul, bukan muter terus.</p>
     </div>`;
     return;
   }
@@ -1118,8 +1156,8 @@ function renderAI(){
           const data=await urlToData(m.text.slice(6));
           upIconData=data;setIconPrev(data);
           openUploadModal();
-          toast('Ikon siap. Isi nama game lalu Publikasikan.');
-        }catch(e){toast('Gagal konversi ikon. Coba unduh manual.','err')}
+          toast('Ikon siap. Isi nama lalu Publikasikan.');
+        }catch(e){toast('Gagal konversi ikon. Unduh manual dulu.','err')}
       });
       mkBtn('Buka / Unduh',()=>window.open(m.text.slice(6),'_blank','noopener'));
       wrap.appendChild(img);wrap.appendChild(row);
@@ -1128,12 +1166,12 @@ function renderAI(){
     const d=document.createElement('div');d.className='ai-msg '+(m.role==='user'?'user':'bot');
     const r=document.createElement('div');r.className='ai-role';r.textContent=m.role==='user'?'Kamu':'Zing AI';
     d.appendChild(r);
-    buildAIContent(m.text,d,m.role==='user');
+    buildAIContent(m.text,d,m.role==='user',m.src);
     b.appendChild(d);
   });
   if(aiBusy){
     const d=document.createElement('div');d.className='ai-msg bot';
-    d.innerHTML=`<div class="ai-role">Zing AI</div><div class="ai-loader">${robotSVG(26)}<span>thinking</span></div>`;
+    d.innerHTML=`<div class="ai-role">Zing AI</div><div class="ai-loader">${robotSVG(26)}<span>thinking (maks 1 menit)</span></div>`;
     b.appendChild(d);
   }
   b.scrollTop=b.scrollHeight;
