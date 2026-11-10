@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <title>Zing — Arcade & TV</title>
 <meta name="theme-color" content="#070b09">
-<meta name="description" content="Zing — lobi game & TV.">
+<meta name="description" content="Zing — lobi game & TV. Main, bikin, bagikan.">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -14,8 +14,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#070b09;--panel:rgba(13,28,18,.6);--line:rgba(47,232,107,.15);--line2:rgba(47,232,107,.3);--green:#2fe86b;--green-deep:#0c4f26;--ink:#eafff2;--mut:#7fa98d;--red:#ff5d5d;--amber:#ffc94d;--disp:'Bricolage Grotesque',sans-serif;--body:'Space Grotesk',sans-serif}
+:root{--bg:#070b09;--panel:rgba(13,28,18,.55);--line:rgba(47,232,107,.16);--line2:rgba(47,232,107,.35);--green:#2fe86b;--green-deep:#0c4f26;--ink:#eafff2;--mut:#7fa98d;--red:#ff5d5d;--amber:#ffc94d;--disp:'Bricolage Grotesque',sans-serif;--body:'Space Grotesk',sans-serif}
 html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--body);overflow:hidden}
+body{background-image:radial-gradient(1100px 520px at 12% -8%,rgba(47,232,107,.09),transparent 60%),radial-gradient(900px 500px at 108% 108%,rgba(47,232,107,.07),transparent 60%),linear-gradient(rgba(47,232,107,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(47,232,107,.03) 1px,transparent 1px);background-size:auto,auto,44px 44px,44px 44px}
 body.locked{overflow:hidden}
 [hidden]{display:none!important}
 ::selection{background:var(--green);color:#04180b}
@@ -29,53 +30,64 @@ button{font-family:inherit;color:inherit}svg{display:block}
 @keyframes wipePass{0%{transform:translateY(101%)}42%{transform:translateY(0)}58%{transform:translateY(0)}100%{transform:translateY(-101%)}}
 @keyframes spinRing{to{transform:rotate(360deg)}}
 #wipe{position:fixed;inset:0;z-index:200;background:var(--green);display:flex;align-items:center;justify-content:center;transform:translateY(101%);pointer-events:none}
-#wipe span{font-family:var(--disp);font-weight:800;font-size:44px;color:#04180b}
+#wipe span{font-family:var(--disp);font-weight:800;font-size:44px;color:#04180b;letter-spacing:-.02em}
 #wipe.run{animation:wipePass .9s cubic-bezier(.7,0,.2,1) both}
 .robot{overflow:visible}.robot .eyes{transform-origin:50px 50px;animation:blink 5s infinite}
 .center-wrap{display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;height:100%;text-align:center;padding:20px}
-.wordmark{font-family:var(--disp);font-weight:800;font-size:42px;letter-spacing:-.03em;display:flex;align-items:baseline;gap:8px}
-.wordmark .v2{font-size:14px;font-weight:700;color:#04180b;background:var(--green);border-radius:6px;padding:3px 8px;transform:translateY(-6px)}
+.wordmark{font-family:var(--disp);font-weight:800;font-size:46px;letter-spacing:-.03em;display:flex;align-items:baseline;gap:8px}
+.wordmark>span:first-child{background:linear-gradient(120deg,#eafff2 30%,#8dffb8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.wordmark .v2{font-size:14px;font-weight:700;color:#04180b;background:var(--green);border-radius:6px;padding:3px 8px;transform:translateY(-6px);box-shadow:0 0 22px rgba(47,232,107,.35)}
 .tagline{font-size:11px;letter-spacing:.4em;color:var(--mut);text-transform:uppercase}
 .bar{width:240px;height:5px;border-radius:4px;background:rgba(47,232,107,.1);overflow:hidden;position:relative}
 .bar i{position:absolute;top:0;bottom:0;left:0;width:0%;background:var(--green)}
 .bar.indet i{width:35%;animation:indet 1.1s infinite}
 .splash-meta{display:flex;justify-content:space-between;width:240px;font-size:12px;color:var(--mut)}
 .splash-meta b{color:var(--green)}
+.splash-halo{position:relative;display:flex;align-items:center;justify-content:center}
+.splash-halo::before{content:'';position:absolute;width:150px;height:150px;border-radius:50%;background:radial-gradient(circle,rgba(47,232,107,.22),transparent 70%);animation:dotPulse 2.4s infinite}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-weight:600;font-size:14px;padding:12px 20px;border-radius:12px;border:1px solid transparent;cursor:pointer;transition:.15s}
 .btn:disabled{opacity:.5;cursor:not-allowed}
 .btn-primary{background:var(--green);color:#04180b;box-shadow:0 4px 0 var(--green-deep)}
+.btn-primary:hover{transform:translateY(-1px)}
 .btn-ghost{background:rgba(47,232,107,.05);color:var(--ink);border-color:var(--line2)}
+.btn-ghost:hover{background:rgba(47,232,107,.12)}
 .btn-white{background:#fff;color:#14181c;border-color:#d8dee2}
 .back-link{background:none;border:none;color:var(--mut);font-size:13px;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
 .icon-btn{width:38px;height:38px;border-radius:10px;border:1px solid var(--line);background:rgba(7,17,11,.6);color:var(--ink);cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none;backdrop-filter:blur(6px)}
 .icon-btn:hover{background:rgba(47,232,107,.12)}
 .mode-cards{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:6px}
-.mode-card{width:210px;padding:24px;border-radius:18px;border:1px solid var(--line2);background:var(--panel);cursor:pointer;transition:.2s;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:8px}
+.mode-card{width:210px;padding:24px;border-radius:18px;border:1px solid var(--line2);background:var(--panel);cursor:pointer;transition:.2s;color:var(--ink);display:flex;flex-direction:column;align-items:center;gap:8px;backdrop-filter:blur(8px)}
 .mode-card:hover{border-color:var(--green);transform:translateY(-3px)}
 .mode-card .mc-ico{color:var(--green);display:flex}
 .mode-card b{font-family:var(--disp);font-size:17px}
 .mode-card .mc-sub{font-size:12px;color:var(--mut)}
-.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(7,11,9,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:14px 28px;background:rgba(7,11,9,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);box-shadow:0 8px 30px rgba(0,0,0,.25)}
 .brand{display:flex;align-items:center;gap:10px}
 .brand .wordmark{font-size:22px}
+.brand .wordmark .v2{box-shadow:none}
 .top-actions{display:flex;align-items:center;gap:10px}
 .user-chip{display:flex;align-items:center;gap:10px;padding:5px 14px 5px 5px;border:1px solid var(--line);border-radius:99px;background:var(--panel);cursor:pointer}
+.user-chip:hover{border-color:var(--line2)}
 .avatar{width:32px;height:32px;border-radius:50%;background:var(--green);color:#04180b;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;overflow:hidden;flex:none}
 .avatar img{width:100%;height:100%;object-fit:cover}
 .user-chip span{font-size:14px;font-weight:600;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .home-main{width:min(1100px,92vw);margin:0 auto;padding:30px 0 90px}
-.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:26px;flex-wrap:wrap}
+.hello{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
 .hello h1{font-family:var(--disp);font-weight:800;font-size:clamp(26px,4vw,38px)}
-.hello h1 em{font-style:normal;color:var(--green)}
+.hello h1 em{font-style:normal;background:linear-gradient(120deg,#2fe86b,#a5ffc9);-webkit-background-clip:text;background-clip:text;color:transparent}
 .hello p{color:var(--mut);margin-top:6px;font-size:14px}
-.clock-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 16px;color:var(--mut);font-size:13px}
-.section-head{display:flex;align-items:center;gap:14px;margin:28px 0 16px}
+.clock-chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 16px;color:var(--mut);font-size:13px;background:var(--panel)}
+.promo{margin:0 0 6px;padding:18px 22px;display:flex;align-items:center;gap:14px;justify-content:space-between;background:linear-gradient(120deg,rgba(47,232,107,.16),rgba(13,28,18,.4));border:1px solid var(--line2);border-radius:20px;flex-wrap:wrap;backdrop-filter:blur(8px)}
+.promo h3{font-family:var(--disp);font-weight:800;font-size:19px}
+.promo em{color:var(--green);font-style:normal}
+.promo p{color:var(--mut);font-size:13px;margin-top:4px}
+.section-head{display:flex;align-items:center;gap:14px;margin:26px 0 16px}
 .section-head h3{font-family:var(--disp);font-weight:800;font-size:18px}
 .section-head i{flex:1;height:1px;background:var(--line)}
 .section-head b{font-size:11px;color:var(--mut);letter-spacing:.15em}
 .grid-games{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
-.gcard{position:relative;overflow:hidden;cursor:pointer;transition:.2s;display:flex;flex-direction:column;border-radius:18px;border:1px solid var(--line);background:var(--panel)}
-.gcard:hover{transform:translateY(-3px);border-color:var(--green)}
+.gcard{position:relative;overflow:hidden;cursor:pointer;transition:.2s;display:flex;flex-direction:column;border-radius:20px;border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(8px)}
+.gcard:hover{transform:translateY(-4px);border-color:var(--green);box-shadow:0 16px 34px rgba(0,0,0,.45)}
 .gc-art{aspect-ratio:1/1;height:auto;border-bottom:1px solid var(--line);overflow:hidden;flex:none;background:#0a1610}
 .gc-art img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
 .gcard:hover .gc-art img{transform:scale(1.06)}
@@ -103,7 +115,7 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .sys{display:flex;align-items:center;gap:8px}
 .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:dotPulse 1.8s infinite;flex:none}
 .modal{position:fixed;inset:0;z-index:120;background:rgba(4,10,6,.8);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;padding:20px}
-.modal-panel{width:min(480px,100%);background:#0a1410;border:1px solid var(--line2);border-radius:20px;padding:26px;animation:fadeUp .3s;max-height:88vh;overflow:auto}
+.modal-panel{width:min(480px,100%);background:#0a1410;border:1px solid var(--line2);border-radius:20px;padding:26px;animation:fadeUp .3s;max-height:88vh;overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.5)}
 .modal-panel h3{font-family:var(--disp);font-weight:800;font-size:21px;margin-bottom:4px;text-align:center}
 .msub{color:var(--mut);font-size:14px;margin-bottom:18px;text-align:center}
 .form-grid{display:flex;flex-direction:column;gap:13px}
@@ -178,6 +190,7 @@ button{font-family:inherit;color:inherit}svg{display:block}
 .bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:90;background:rgba(7,11,9,.96);backdrop-filter:blur(14px);border-top:1px solid var(--line);justify-content:space-around;align-items:stretch;padding-bottom:env(safe-area-inset-bottom)}
 .bottom-nav button{background:none;border:none;color:var(--mut);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:10px;font-weight:600;padding:9px 14px;position:relative;min-width:64px}
 .bottom-nav button.active{color:var(--green)}
+.bottom-nav button.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:26px;height:3px;border-radius:2px;background:var(--green);box-shadow:0 0 10px rgba(47,232,107,.6)}
 #toasts{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);z-index:300;display:flex;flex-direction:column;gap:10px;align-items:center;pointer-events:none}
 .toast{display:flex;align-items:center;gap:10px;background:#0f2416;border:1px solid var(--line2);padding:12px 18px;border-radius:12px;font-size:14px;max-width:min(440px,88vw)}
 .toast.err{border-color:#5c2323;background:#241010}
@@ -189,6 +202,8 @@ body[data-mode="hp"] .home-main{width:100%;max-width:600px;padding:14px 12px 24p
 body[data-mode="hp"] .hello{margin-bottom:12px}
 body[data-mode="hp"] .hello h1{font-size:21px}
 body[data-mode="hp"] .clock-chip{display:none}
+body[data-mode="hp"] .promo{padding:14px 16px}
+body[data-mode="hp"] .promo h3{font-size:16px}
 body[data-mode="hp"] .section-head{margin:14px 0 10px}
 body[data-mode="hp"] .grid-games{grid-template-columns:repeat(2,1fr);gap:12px}
 body[data-mode="hp"] .gcard{border-radius:16px}
@@ -225,7 +240,7 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
 
 <section class="screen" id="screen-splash">
   <div class="center-wrap">
-    <div id="splashRobot"></div>
+    <div class="splash-halo"><div id="splashRobot"></div></div>
     <div class="wordmark"><span>Zing</span><span class="v2">ARCADE</span></div>
     <p class="tagline">Lobi Game & TV</p>
     <div class="bar"><i></i></div>
@@ -252,10 +267,14 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
 </section>
 
 <section class="screen" id="screen-login" hidden>
-  <div class="center-wrap" style="gap:22px">
+  <div class="center-wrap" style="gap:20px">
     <div id="loginRobot"></div>
     <h1 style="font-family:var(--disp);font-size:30px">Buka Akses <em style="color:var(--green);font-style:normal">Penuh</em></h1>
     <p style="color:var(--mut);max-width:320px">Masuk untuk main semua game, ikut chat, like & komentar, dan pakai Zing AI.</p>
+    <button class="btn btn-primary" id="btnAnon" style="min-width:240px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>
+      Masuk Anonim (tulis nama)
+    </button>
     <button class="btn btn-white" id="btnGoogle">
       <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.3C36.9 40.4 44 35 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg>
       Masuk dengan Google
@@ -274,6 +293,13 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
       <div><h1 id="helloTitle">Selamat datang.</h1><p id="helloSub">Pilih game atau TV dan mulai.</p></div>
       <div class="clock-chip"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg><b id="clock">--:--:--</b></div>
     </div>
+    <aside class="promo">
+      <div>
+        <h3>Bikin game & ikon dengan <em>Zing AI</em></h3>
+        <p>Gratis, langsung dari lobi. Hasil kode bisa langsung jadi game.</p>
+      </div>
+      <button class="btn btn-primary" id="btnPromoAI">Coba Zing AI</button>
+    </aside>
     <div class="section-head"><h3>Game & TV</h3><i></i><b id="countGames"></b></div>
     <div class="grid-games" id="gridGames">
       <article class="gcard upload" id="cardUpload">
@@ -327,12 +353,24 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
   </div>
 </section>
 
+<div class="modal" id="anonModal" hidden>
+  <div class="modal-panel">
+    <div style="display:flex;justify-content:center;margin-bottom:8px" id="anonRobot"></div>
+    <h3>Masuk Anonim</h3>
+    <p class="msub">Tanpa akun Google. Tulis nama pemainmu, langsung jalan.</p>
+    <input class="f-input" id="anonName" maxlength="20" placeholder="Nama pemain...">
+    <button class="btn btn-primary" id="btnAnonGo" style="width:100%;margin-top:12px">Mulai Main</button>
+    <button class="btn btn-ghost" id="btnAnonCancel" style="width:100%;margin-top:8px">Batal</button>
+  </div>
+</div>
+
 <div class="modal" id="lockModal" hidden>
   <div class="modal-panel">
     <div style="display:flex;justify-content:center;margin-bottom:10px" id="lockRobot"></div>
     <h3>Perlu masuk dulu</h3>
-    <p class="msub">Fitur ini tersedia setelah masuk dengan Google.</p>
-    <button class="btn btn-white" id="btnLockGoogle" style="width:100%"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.3C36.9 40.4 44 35 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg><span>Masuk dengan Google</span></button>
+    <p class="msub">Pilih cara masuk: anonim (tulis nama) atau Google.</p>
+    <button class="btn btn-primary" id="btnLockAnon" style="width:100%">Masuk Anonim</button>
+    <button class="btn btn-white" id="btnLockGoogle" style="width:100%;margin-top:8px"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.1H42V20H24v8h11.3C33.7 32.7 29.3 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 13 4 4 13 4 24s9 20 20 20 20-9 20-20c0-1.3-.1-2.7-.4-3.9z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.9 1.2 8 3l5.7-5.7C34.5 6.1 29.5 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 10-2 13.6-5.2l-6.3-5.3C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.1H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.3 5.7l6.3 5.3C36.9 40.4 44 35 44 24c0-1.3-.1-2.7-.4-3.9z"/></svg><span>Masuk dengan Google</span></button>
     <button class="btn btn-ghost" id="btnLockCancel" style="width:100%;margin-top:8px">Nanti saja</button>
   </div>
 </div>
@@ -453,7 +491,7 @@ body[data-mode="hp"] .modal-panel{width:100%;border-radius:18px 18px 0 0;max-hei
 
 <script type="module">
 import {initializeApp} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
-import {getAuth,GoogleAuthProvider,signInWithPopup,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import {getAuth,GoogleAuthProvider,signInWithPopup,signInAnonymously,onAuthStateChanged,signOut} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import {getFirestore,doc,setDoc,getDoc,collection,query,orderBy,limit,where,addDoc,deleteDoc,updateDoc,onSnapshot,serverTimestamp,increment} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js';
 
 const firebaseConfig={apiKey:"AIzaSyDYNnsjIEGiosXbflNTBTHKXuX3i1rKpp4",authDomain:"zain-studio-browser.firebaseapp.com",projectId:"zain-studio-browser",storageBucket:"zain-studio-browser.firebasestorage.app",messagingSenderId:"971058949669",appId:"1:971058949669:web:656f418432972b9ae0d9cc"};
@@ -465,7 +503,7 @@ const db=getFirestore(app);
 const provider=new GoogleAuthProvider();
 
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-let firebaseUser=null,userDoc=null,lockNext=null,unread=0;
+let firebaseUser=null,userDoc=null,lockNext=null,unread=0,pendingAnonName='';
 const isAdmin=()=>firebaseUser?.email===ADMIN_EMAIL;
 const currentScreen=()=>document.body.dataset.screen||'';
 
@@ -479,7 +517,7 @@ function toast(msg,type='ok'){
   setTimeout(()=>t.remove(),4200);
 }
 function robotSVG(w=120){return `<svg class="robot" width="${w}" height="${w}" viewBox="0 0 100 100" fill="none"><line x1="50" y1="8" x2="50" y2="22" stroke="#1d7a3c" stroke-width="4" stroke-linecap="round"/><polygon points="50,2 45,14 55,14" fill="#2fe86b"/><rect x="42" y="80" width="16" height="6" fill="#1bb94f"/><path d="M30 86 L70 86 L75 98 L25 98 Z" fill="#1bb94f" stroke="#0d3319" stroke-width="2"/><rect x="8" y="38" width="12" height="24" rx="2" fill="#1bb94f"/><rect x="80" y="38" width="12" height="24" rx="2" fill="#1bb94f"/><circle cx="14" cy="44" r="2" fill="#2fe86b"/><circle cx="86" cy="44" r="2" fill="#2fe86b"/><path d="M32 24 L68 24 L82 40 L82 60 L68 76 L32 76 L18 60 L18 40 Z" fill="#2fe86b" stroke="#0d3319" stroke-width="3"/><path d="M28 36 L72 36 L75 42 L75 58 L72 64 L28 64 L25 58 L25 42 Z" fill="#08150d"/><g class="eyes"><rect x="36" y="44" width="12" height="12" rx="2" fill="#2fe86b"/><rect x="52" y="44" width="12" height="12" rx="2" fill="#2fe86b"/></g><line x1="42" y1="72" x2="58" y2="72" stroke="#2fe86b" stroke-width="2" stroke-linecap="round"/></svg>`}
- $('#splashRobot').innerHTML=robotSVG(100);$('#brandRobot').innerHTML=robotSVG(28);$('#zlRobot').innerHTML=robotSVG(60);$('#lockRobot').innerHTML=robotSVG(80);$('#loginRobot').innerHTML=robotSVG(120);$('#aiHeroRobot').innerHTML=robotSVG(44);$('#modeRobot').innerHTML=robotSVG(100);
+ $('#splashRobot').innerHTML=robotSVG(100);$('#brandRobot').innerHTML=robotSVG(28);$('#zlRobot').innerHTML=robotSVG(60);$('#lockRobot').innerHTML=robotSVG(80);$('#loginRobot').innerHTML=robotSVG(120);$('#aiHeroRobot').innerHTML=robotSVG(44);$('#modeRobot').innerHTML=robotSVG(100);$('#anonRobot').innerHTML=robotSVG(80);
 
 function wipe(mid){const w=$('#wipe');w.classList.remove('run');void w.offsetWidth;w.classList.add('run');setTimeout(()=>mid&&mid(),380);setTimeout(()=>w.classList.remove('run'),950)}
 function show(id){
@@ -494,10 +532,37 @@ function show(id){
 }
 function showWipe(id){wipe(()=>show(id))}
 
-async function googleLogin(){try{await signInWithPopup(auth,provider)}catch(e){if(e.code==='auth/popup-blocked'){try{await signInWithRedirect(auth,provider)}catch(_){}}else if(!/cancelled|closed/i.test(e.code||''))toast('Gagal masuk: '+(e.code||e.message),'err')}}
+async function googleLogin(){try{await signInWithPopup(auth,provider)}catch(e){if(e.code==='auth/popup-blocked')toast('Popup diblokir browser, coba lagi','err');else if(!/cancelled|closed/i.test(e.code||''))toast('Gagal masuk: '+(e.code||e.message),'err')}}
  $('#btnGoogle').onclick=googleLogin;$('#btnLockGoogle').onclick=googleLogin;
 
-async function ensureUserDoc(u){try{const d=await getDoc(doc(db,'users',u.uid));userDoc=d.exists()?d.data():{name:u.displayName||'Pemain',av:''};if(!d.exists())await setDoc(doc(db,'users',u.uid),{...userDoc,createdAt:serverTimestamp()})}catch(e){userDoc={name:u.displayName||'Pemain',av:''}}}
+function openAnon(){$('#anonModal').hidden=false;$('#anonName').value='';setTimeout(()=>$('#anonName').focus(),50)}
+ $('#btnAnon').onclick=openAnon;
+ $('#btnLockAnon').onclick=()=>{$('#lockModal').hidden=true;openAnon()};
+ $('#btnAnonCancel').onclick=()=>{$('#anonModal').hidden=true;pendingAnonName=''};
+ $('#anonName').onkeydown=e=>{if(e.key==='Enter')$('#btnAnonGo').click()};
+ $('#btnAnonGo').onclick=async()=>{
+  const name=$('#anonName').value.trim();
+  if(!name){toast('Tulis nama dulu ya','err');return}
+  pendingAnonName=name;$('#anonModal').hidden=true;
+  try{await signInAnonymously(auth)}
+  catch(e){pendingAnonName='';toast('Gagal masuk anonim: '+(e.code||e.message),'err')}
+};
+
+async function ensureUserDoc(u){
+  try{
+    const d=await getDoc(doc(db,'users',u.uid));
+    if(d.exists()){userDoc=d.data()}
+    else{
+      userDoc={name:u.displayName||pendingAnonName||'Pemain',av:'',named:!!(pendingAnonName||u.displayName)};
+      await setDoc(doc(db,'users',u.uid),{...userDoc,createdAt:serverTimestamp()});
+    }
+    if(pendingAnonName&&u.displayName==null){
+      userDoc={...(userDoc||{}),name:pendingAnonName,named:true};
+      await setDoc(doc(db,'users',u.uid),{name:pendingAnonName,named:true},{merge:true});
+    }
+  }catch(e){userDoc={name:u.displayName||pendingAnonName||'Pemain',av:''}}
+  pendingAnonName='';
+}
 
 onAuthStateChanged(auth,async u=>{
   firebaseUser=u;
@@ -512,9 +577,9 @@ function renderTop(){
   if(!firebaseUser){const b=document.createElement('button');b.className='btn btn-primary';b.textContent='Masuk';b.onclick=()=>showWipe('screen-login');t.appendChild(b);return}
   const chip=document.createElement('div');chip.className='user-chip';chip.onclick=openSettings;
   const av=document.createElement('div');av.className='avatar';
-  if(userDoc?.av){const i=new Image();i.src=userDoc.av;av.appendChild(i)}else av.textContent=(userDoc?.name||firebaseUser.displayName||'P')[0].toUpperCase();
+  if(userDoc?.av){const i=new Image();i.src=userDoc.av;av.appendChild(i)}else av.textContent=(userDoc?.name||'P')[0].toUpperCase();
   chip.appendChild(av);
-  const sp=document.createElement('span');sp.textContent=userDoc?.name||firebaseUser.displayName||'Pemain';chip.appendChild(sp);
+  const sp=document.createElement('span');sp.textContent=userDoc?.name||'Pemain';chip.appendChild(sp);
   t.appendChild(chip);
   const out=document.createElement('button');out.className='icon-btn';out.title='Keluar';
   out.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>';
@@ -527,12 +592,13 @@ function renderNavProfile(){
   else{b.onclick=()=>showWipe('screen-login');$('#navProfileLbl').textContent='Masuk'}
 }
 
+/* Buka game dari link share: ?game=<id> (satu file, tanpa 404 router) */
 let pendingGame=null;
 try{pendingGame=new URLSearchParams(location.search).get('game')}catch(e){}
 
 function enterHome(){
   showWipe('screen-home');
-  const n=(userDoc?.name||firebaseUser?.displayName||'').split(' ')[0];
+  const n=(userDoc?.name||'').split(' ')[0];
   $('#helloTitle').innerHTML=n?`Halo, <em>${n}</em>.`:'Selamat datang.';
   $('#helloSub').textContent=firebaseUser?'Pilih game, nonton TV, atau ngobrol di chat.':'Masuk untuk main semua game & ikut chat.';
   if(pendingGame){const g=pendingGame;pendingGame=null;setTimeout(()=>openGame(g),60)}
@@ -540,6 +606,7 @@ function enterHome(){
  $('#btnBackHome').onclick=()=>enterHome();
  $('#navHome').onclick=()=>enterHome();
  $('#navAI').onclick=()=>{if(!firebaseUser)return openLock(openAI);openAI()};
+ $('#btnPromoAI').onclick=()=>{if(!firebaseUser)return openLock(openAI);openAI()};
  $('#navChat').onclick=()=>openChat();
 
  $$('.mode-card').forEach(b=>b.onclick=()=>{document.body.dataset.mode=b.dataset.mode;localStorage.setItem('zing_mode',b.dataset.mode);runSplash()});
@@ -562,19 +629,19 @@ function runSplash(){
   },40);
 }
 
-/* ===== GAME BAWAAN — ikon ilustratif premium ===== */
+/* ===== GAME BAWAAN — ikon app-style premium ===== */
 const svgToUrl=svg=>'data:image/svg+xml,'+encodeURIComponent(svg);
 const BUILTIN_DEFAULTS={
   warga:{title:'Warga 62',tag:'Petualangan',desc:'Jelajahi dunia hangat Kampung 62 penuh cerita.',url:'https://mainwarga62.id/',
-    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="sky1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1040"/><stop offset=".4" stop-color="#6d2a6b"/><stop offset=".75" stop-color="#e0655f"/><stop offset="1" stop-color="#ffb35c"/></linearGradient><radialGradient id="sun1" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff7c9"/><stop offset=".55" stop-color="#ffd76e"/><stop offset="1" stop-color="#ffd76e" stop-opacity="0"/></radialGradient><linearGradient id="house1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9c4"/><stop offset="1" stop-color="#e8a45c"/></linearGradient></defs><rect width="200" height="200" fill="url(#sky1)"/><g fill="#fff"><circle cx="30" cy="26" r="1.6" opacity=".9"/><circle cx="58" cy="18" r="1.1" opacity=".6"/><circle cx="94" cy="30" r="1.4" opacity=".8"/><circle cx="150" cy="20" r="1.2" opacity=".7"/><circle cx="176" cy="38" r="1.6" opacity=".9"/><circle cx="18" cy="52" r="1.1" opacity=".5"/></g><circle cx="128" cy="74" r="46" fill="url(#sun1)"/><circle cx="128" cy="74" r="22" fill="#ffe98a"/><g stroke="#2b1638" stroke-width="2.4" fill="none" stroke-linecap="round" opacity=".85"><path d="M38 60 q5 -5 10 0 q5 -5 10 0"/><path d="M62 46 q4 -4 8 0 q4 -4 8 0"/></g><rect y="150" width="200" height="50" fill="#241224"/><ellipse cx="100" cy="151" rx="120" ry="8" fill="#38172f" opacity=".7"/><path d="M166 150 q2 -26 -4 -44" stroke="#1c0f1e" stroke-width="6" fill="none" stroke-linecap="round"/><g fill="#123326" stroke="#1c0f1e" stroke-width="2"><path d="M162 106 q-16 -10 -30 -4 q14 2 30 10z"/><path d="M162 106 q16 -10 30 -4 q-14 2 -30 10z"/><path d="M162 106 q-6 -18 6 -26 q-4 14 0 26z"/><path d="M162 106 q-20 -2 -26 10 q12 -6 26 -4z"/></g><g><rect x="40" y="104" width="86" height="46" rx="4" fill="url(#house1)"/><polygon points="83,66 30,108 136,108" fill="#5a2a1c"/><rect x="72" y="118" width="22" height="32" rx="2" fill="#4a2015"/><rect x="48" y="112" width="17" height="15" rx="2" fill="#ffd98a"/><rect x="101" y="112" width="17" height="15" rx="2" fill="#ffd98a"/><g fill="#fff" opacity=".35"><circle cx="112" cy="84" r="3"/><circle cx="118" cy="76" r="4"/><circle cx="126" cy="68" r="5"/></g></g></svg>`)},
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cw"><rect width="200" height="200" rx="44"/></clipPath><linearGradient id="sw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a1445"/><stop offset=".38" stop-color="#8e3a66"/><stop offset=".68" stop-color="#e06046"/><stop offset="1" stop-color="#ffb45e"/></linearGradient><radialGradient id="suw" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#fff7cd"/><stop offset=".45" stop-color="#ffe08a" stop-opacity=".75"/><stop offset="1" stop-color="#ffe08a" stop-opacity="0"/></radialGradient><linearGradient id="hw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff1d8"/><stop offset="1" stop-color="#eaa760"/></linearGradient><linearGradient id="rw" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#96502f"/><stop offset="1" stop-color="#542716"/></linearGradient><linearGradient id="gw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3c2130"/><stop offset="1" stop-color="#180b12"/></linearGradient><linearGradient id="ww" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe9a8"/><stop offset="1" stop-color="#ffc85c"/></linearGradient></defs><g clip-path="url(#cw)"><rect width="200" height="200" fill="url(#sw)"/><g fill="#ffffff"><circle cx="34" cy="30" r="1.7" opacity=".9"/><circle cx="70" cy="20" r="1.2" opacity=".7"/><circle cx="106" cy="34" r="1.5" opacity=".8"/><circle cx="152" cy="24" r="1.3" opacity=".75"/><circle cx="178" cy="44" r="1.7" opacity=".85"/><circle cx="20" cy="58" r="1.2" opacity=".55"/></g><circle cx="126" cy="84" r="54" fill="url(#suw)"/><circle cx="126" cy="84" r="24" fill="#ffe27d"/><g fill="#ffffff" opacity=".28"><ellipse cx="48" cy="66" rx="24" ry="8"/><ellipse cx="70" cy="74" rx="18" ry="6"/></g><g stroke="#241227" stroke-width="2.2" fill="none" stroke-linecap="round" opacity=".8"><path d="M58 52 q4 -4 8 0 q4 -4 8 0"/><path d="M84 40 q3.5 -3.5 7 0 q3.5 -3.5 7 0"/></g><g fill="#471b38" opacity=".55"><rect x="8" y="132" width="26" height="20"/><polygon points="21,120 4,134 38,134"/><rect x="160" y="128" width="28" height="24"/><polygon points="174,114 156,130 192,130"/></g><rect y="150" width="200" height="50" fill="url(#gw)"/><ellipse cx="88" cy="152" rx="90" ry="7" fill="#54283a" opacity=".6"/><path d="M168 152 q3 -30 -5 -46" stroke="#241019" stroke-width="6" fill="none" stroke-linecap="round"/><g fill="#16402c" stroke="#0e2a1d" stroke-width="1.5"><path d="M163 104 q-16 -9 -30 -3 q15 3 30 9z"/><path d="M163 104 q16 -9 30 -3 q-15 3 -30 9z"/><path d="M163 104 q-5 -18 8 -27 q-6 14 -2 27z"/><path d="M163 104 q-20 -3 -27 8 q13 -5 27 -2z"/><path d="M163 104 q17 -6 26 5 q-13 -7 -26 -1z"/></g><rect x="42" y="102" width="92" height="48" rx="3" fill="url(#hw)"/><polygon points="88,62 32,104 144,104" fill="url(#rw)"/><rect x="80" y="60" width="9" height="16" fill="#4a2015"/><g fill="#ffffff" opacity=".5"><circle cx="85" cy="52" r="3"/><circle cx="90" cy="45" r="4"/><circle cx="97" cy="38" r="5"/></g><rect x="76" y="116" width="24" height="34" rx="2" fill="#4a2015"/><circle cx="96" cy="134" r="2" fill="#ffcf6e"/><rect x="50" y="110" width="18" height="15" rx="2" fill="url(#ww)"/><line x1="59" y1="110" x2="59" y2="125" stroke="#4a2015" stroke-width="2"/><line x1="50" y1="117.5" x2="68" y2="117.5" stroke="#4a2015" stroke-width="2"/><rect x="108" y="110" width="18" height="15" rx="2" fill="url(#ww)"/><line x1="117" y1="110" x2="117" y2="125" stroke="#4a2015" stroke-width="2"/><line x1="108" y1="117.5" x2="126" y2="117.5" stroke="#4a2015" stroke-width="2"/><ellipse cx="59" cy="152" rx="14" ry="4" fill="#ffcf6e" opacity=".25"/><ellipse cx="117" cy="152" rx="14" ry="4" fill="#ffcf6e" opacity=".25"/></g></svg>`)},
   ayam:{title:'Ayam Kabur',tag:'Arcade Endless',desc:'Lari secepat kilat, jangan sampai tertangkap.',url:'https://ayamkabur.pages.dev/',
-    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b2a4a"/><stop offset=".55" stop-color="#0d5c3f"/><stop offset="1" stop-color="#159a52"/></linearGradient></defs><rect width="200" height="200" fill="url(#bg2)"/><g stroke="#b7ffd9" stroke-linecap="round" opacity=".5"><line x1="8" y1="86" x2="58" y2="86" stroke-width="6"/><line x1="0" y1="108" x2="44" y2="108" stroke-width="7"/><line x1="14" y1="130" x2="52" y2="130" stroke-width="5"/><line x1="4" y1="152" x2="36" y2="152" stroke-width="6"/></g><g fill="#dfffe9" opacity=".4"><circle cx="46" cy="150" r="12"/><circle cx="62" cy="156" r="9"/><circle cx="34" cy="158" r="8"/></g><ellipse cx="116" cy="112" rx="38" ry="30" fill="#fff"/><ellipse cx="112" cy="120" rx="24" ry="16" fill="#f2f7f2"/><path d="M104 104 q-4 18 14 24 q16 4 22 -10 q-20 8 -36 -14z" fill="#e8e2d8"/><g stroke="#fff" stroke-width="7" stroke-linecap="round"><line x1="82" y1="100" x2="64" y2="88"/><line x1="80" y1="112" x2="58" y2="110"/></g><g stroke="#ffb84d" stroke-width="7" stroke-linecap="round"><line x1="108" y1="138" x2="98" y2="162"/><line x1="126" y1="138" x2="138" y2="158"/></g><g stroke="#e89b2e" stroke-width="6" stroke-linecap="round" fill="none"><path d="M98 162 l-8 4"/><path d="M98 162 l2 8"/><path d="M138 158 l8 2"/><path d="M138 158 l-4 8"/></g><circle cx="152" cy="82" r="20" fill="#fff"/><path d="M138 62 q6 -12 12 -3 q4 -11 12 -2 q6 -8 10 2 q-14 8 -34 3z" fill="#ff5d5d"/><polygon points="170,78 186,84 170,90" fill="#ffc94d"/><path d="M166 90 q6 10 -2 14 q-8 -2 -4 -12" fill="#ff5d5d"/><circle cx="156" cy="78" r="6" fill="#0d2214"/><circle cx="158" cy="76" r="2" fill="#fff"/></svg>`)},
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="ca"><rect width="200" height="200" rx="44"/></clipPath><linearGradient id="sa" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a2f52"/><stop offset=".5" stop-color="#0e6b46"/><stop offset="1" stop-color="#1ba85e"/></linearGradient><radialGradient id="gla" cx=".5" cy=".45" r=".6"><stop offset="0" stop-color="#7dffc0" stop-opacity=".3"/><stop offset="1" stop-color="#7dffc0" stop-opacity="0"/></radialGradient></defs><g clip-path="url(#ca)"><rect width="200" height="200" fill="url(#sa)"/><circle cx="112" cy="106" r="76" fill="url(#gla)"/><g stroke="#c8ffde" stroke-linecap="round" opacity=".55"><line x1="6" y1="84" x2="56" y2="84" stroke-width="6"/><line x1="0" y1="106" x2="42" y2="106" stroke-width="7"/><line x1="10" y1="128" x2="50" y2="128" stroke-width="5"/><line x1="2" y1="150" x2="34" y2="150" stroke-width="6"/></g><g fill="#eafff2" opacity=".35"><circle cx="58" cy="146" r="13"/><circle cx="74" cy="152" r="9"/><circle cx="46" cy="154" r="8"/><circle cx="88" cy="156" r="6"/></g><path d="M84 100 q-20 -6 -26 -24 q14 4 24 14 q-2 -12 6 -20 q4 12 8 22z" fill="#f4f4ee"/><ellipse cx="118" cy="110" rx="37" ry="28" fill="#ffffff"/><ellipse cx="114" cy="118" rx="23" ry="15" fill="#f1f4ee"/><path d="M104 102 q14 -4 24 8 q-10 10 -26 6 q4 -8 2 -14z" fill="#e4e8de"/><g stroke="#ffb020" stroke-width="7" stroke-linecap="round"><line x1="108" y1="136" x2="94" y2="164"/><line x1="128" y1="136" x2="142" y2="160"/></g><g stroke="#e8950e" stroke-width="6" stroke-linecap="round" fill="none"><path d="M94 164 l-10 3"/><path d="M94 164 l3 9"/><path d="M142 160 l10 0"/><path d="M142 160 l-3 9"/></g><circle cx="152" cy="80" r="21" fill="#ffffff"/><path d="M137 60 q5 -12 12 -3 q4 -11 12 -2 q5 -7 9 1 q-14 9 -33 4z" fill="#ff5d5d"/><polygon points="171,76 188,82 171,88" fill="#ffb020"/><path d="M167 88 q7 10 -1 15 q-9 -2 -5 -13z" fill="#ff5d5d"/><circle cx="156" cy="76" r="6.5" fill="#12250f"/><circle cx="158" cy="74" r="2.2" fill="#fff"/><g stroke="#ffffff" stroke-width="7" stroke-linecap="round" opacity=".9"><line x1="86" y1="96" x2="66" y2="84"/><line x1="84" y1="110" x2="60" y2="108"/></g></g></svg>`)},
   tv:{title:'Famelack TV',tag:'TV Streaming',desc:'Nonton siaran langsung dari seluruh dunia.',url:'https://famelack.com/',
-    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bg3" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#2b1d05"/><stop offset="1" stop-color="#120c02"/></linearGradient><linearGradient id="scr3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f6fff"/><stop offset=".5" stop-color="#2039c9"/><stop offset="1" stop-color="#101c66"/></linearGradient><radialGradient id="glow3" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#ffc94d" stop-opacity=".5"/><stop offset="1" stop-color="#ffc94d" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#bg3)"/><circle cx="100" cy="100" r="78" fill="url(#glow3)"/><g stroke="#c99a2e" stroke-width="5" stroke-linecap="round"><line x1="76" y1="30" x2="100" y2="60"/><line x1="124" y1="30" x2="100" y2="60"/></g><circle cx="76" cy="28" r="5" fill="#ffc94d"/><circle cx="124" cy="28" r="5" fill="#ffc94d"/><g stroke="#ffc94d" fill="none" opacity=".5" stroke-width="3" stroke-linecap="round"><path d="M52 20 a34 34 0 0 1 16 -12"/><path d="M148 20 a34 34 0 0 0 -16 -12"/></g><rect x="30" y="58" width="140" height="96" rx="16" fill="#8a6316"/><rect x="34" y="62" width="132" height="88" rx="13" fill="#5c3f0a"/><rect x="44" y="70" width="112" height="72" rx="8" fill="url(#scr3)"/><path d="M44 70 h50 l-30 72 h-20z" fill="#fff" opacity=".12"/><circle cx="100" cy="106" r="22" fill="#ff4d5d"/><circle cx="100" cy="106" r="22" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2"/><polygon points="93,94 93,118 115,106" fill="#fff"/><rect x="126" y="76" width="28" height="14" rx="4" fill="#ff3b3b"/><circle cx="133" cy="83" r="2.5" fill="#fff"/><circle cx="141" cy="83" r="3.4" fill="#fff"/><rect x="82" y="154" width="36" height="12" rx="4" fill="#8a6316"/><rect x="62" y="166" width="76" height="9" rx="4.5" fill="#a87c1e"/></svg>`)},
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="ct"><rect width="200" height="200" rx="44"/></clipPath><linearGradient id="st" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#38260a"/><stop offset="1" stop-color="#140d03"/></linearGradient><linearGradient id="sct" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a7bff"/><stop offset=".55" stop-color="#2440cf"/><stop offset="1" stop-color="#12226e"/></linearGradient><radialGradient id="glt" cx=".5" cy=".5" r=".55"><stop offset="0" stop-color="#ffc94d" stop-opacity=".45"/><stop offset="1" stop-color="#ffc94d" stop-opacity="0"/></radialGradient></defs><g clip-path="url(#ct)"><rect width="200" height="200" fill="url(#st)"/><circle cx="100" cy="104" r="82" fill="url(#glt)"/><g stroke="#caa02e" stroke-width="5" stroke-linecap="round" fill="none"><line x1="76" y1="34" x2="100" y2="62"/><line x1="124" y1="34" x2="100" y2="62"/></g><circle cx="76" cy="31" r="5" fill="#ffc94d"/><circle cx="124" cy="31" r="5" fill="#ffc94d"/><g stroke="#ffc94d" stroke-width="3" fill="none" stroke-linecap="round" opacity=".55"><path d="M56 24 a30 30 0 0 1 12 -13"/><path d="M144 24 a30 30 0 0 0 -12 -13"/></g><rect x="28" y="60" width="144" height="98" rx="17" fill="#a87c1e"/><rect x="33" y="65" width="134" height="88" rx="13" fill="#5c3f0a"/><rect x="43" y="73" width="114" height="72" rx="8" fill="url(#sct)"/><g stroke="#ffffff" stroke-width="1" opacity=".14"><line x1="43" y1="88" x2="157" y2="88"/><line x1="43" y1="103" x2="157" y2="103"/><line x1="43" y1="118" x2="157" y2="118"/><line x1="43" y1="133" x2="157" y2="133"/></g><path d="M43 73 h48 l-30 72 h-18z" fill="#ffffff" opacity=".13"/><circle cx="100" cy="109" r="23" fill="#ff4757"/><circle cx="100" cy="109" r="23" fill="none" stroke="#ffffff" stroke-opacity=".4" stroke-width="2.5"/><polygon points="93,97 93,121 116,109" fill="#ffffff"/><rect x="128" y="80" width="27" height="13" rx="4" fill="#ff3b3b"/><circle cx="135" cy="86.5" r="2.4" fill="#fff"/><circle cx="142.5" cy="86.5" r="3.2" fill="#fff"/><rect x="80" y="158" width="40" height="12" rx="4" fill="#a87c1e"/><rect x="58" y="170" width="84" height="10" rx="5" fill="#c99a2e"/></g></svg>`)},
   dinner:{title:'Cosmic Diner',tag:'Simulasi Koki',desc:'Sajikan burger demi burger untuk astronot.',url:'https://spacediner.vercel.app/',
-    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0d0b2e"/><stop offset=".55" stop-color="#1d1450"/><stop offset="1" stop-color="#331a63"/></linearGradient><radialGradient id="neb4" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#8a5cff" stop-opacity=".4"/><stop offset="1" stop-color="#8a5cff" stop-opacity="0"/></radialGradient><linearGradient id="bun4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdf9e"/><stop offset="1" stop-color="#e8a04c"/></linearGradient></defs><rect width="200" height="200" fill="url(#bg4)"/><ellipse cx="66" cy="62" rx="96" ry="76" fill="url(#neb4)"/><g fill="#fff"><circle cx="26" cy="36" r="1.8"/><circle cx="176" cy="30" r="2.2"/><circle cx="184" cy="96" r="1.6"/><circle cx="24" cy="108" r="1.4"/><circle cx="60" cy="20" r="1.3"/><circle cx="142" cy="164" r="1.8"/><circle cx="30" cy="176" r="1.4"/><circle cx="170" cy="150" r="1.4"/></g><circle cx="156" cy="52" r="15" fill="#f4b23e"/><ellipse cx="156" cy="52" rx="27" ry="7" fill="none" stroke="#a5ffc9" stroke-width="3" transform="rotate(-18 156 52)"/><circle cx="150" cy="47" r="4" fill="#e09a2e" opacity=".8"/><circle cx="34" cy="142" r="10" fill="#b9c6ff"/><circle cx="31" cy="139" r="3" fill="#93a4e8" opacity=".8"/><g fill="#fff" opacity=".3"><circle cx="84" cy="56" r="4"/><circle cx="96" cy="46" r="5"/><circle cx="110" cy="54" r="4"/></g><g><path d="M58 104 Q60 66 100 66 Q140 66 142 104 Z" fill="url(#bun4)" stroke="#b06a2c" stroke-width="2"/><g fill="#fff2d8"><circle cx="82" cy="80" r="2.6"/><circle cx="102" cy="74" r="2.6"/><circle cx="120" cy="82" r="2.6"/></g><path d="M54 104 h92 q-2 10 -10 12 h-72 q-8 -2 -10 -12z" fill="#7bc86c"/><path d="M48 118 q52 18 104 0 l0 4 q-52 18 -104 0z" fill="#ffd166"/><rect x="52" y="122" width="96" height="12" rx="6" fill="#6b3f23"/><path d="M58 134 h84 q-6 20 -42 20 q-36 0 -42 -20z" fill="url(#bun4)" stroke="#b06a2c" stroke-width="2"/></g></svg>`)},
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cd"><rect width="200" height="200" rx="44"/></clipPath><linearGradient id="sd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0c0a2e"/><stop offset=".55" stop-color="#1e1454"/><stop offset="1" stop-color="#361c6b"/></linearGradient><radialGradient id="nd" cx=".32" cy=".28" r=".8"><stop offset="0" stop-color="#9a6bff" stop-opacity=".45"/><stop offset="1" stop-color="#9a6bff" stop-opacity="0"/></radialGradient><linearGradient id="bd" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffdf9e"/><stop offset="1" stop-color="#e69a45"/></linearGradient></defs><g clip-path="url(#cd)"><rect width="200" height="200" fill="url(#sd)"/><ellipse cx="62" cy="56" rx="100" ry="80" fill="url(#nd)"/><g fill="#ffffff"><circle cx="24" cy="34" r="1.8"/><circle cx="176" cy="26" r="2.2"/><circle cx="186" cy="92" r="1.6"/><circle cx="22" cy="104" r="1.4"/><circle cx="58" cy="18" r="1.3"/><circle cx="140" cy="170" r="1.8"/><circle cx="28" cy="172" r="1.4"/><circle cx="172" cy="146" r="1.4"/><circle cx="96" cy="24" r="1.5"/><circle cx="60" cy="186" r="1.5"/></g><circle cx="154" cy="48" r="16" fill="#f4b23e"/><path d="M140 44 a16 16 0 0 1 12 -10" stroke="#ffdf9e" stroke-width="3" fill="none" opacity=".7"/><ellipse cx="154" cy="48" rx="28" ry="7" fill="none" stroke="#a5ffc9" stroke-width="3.5" transform="rotate(-16 154 48)"/><circle cx="36" cy="128" r="11" fill="#b9c6ff"/><circle cx="33" cy="125" r="3.4" fill="#8fa0e6" opacity=".9"/><circle cx="58" cy="72" r="5" fill="#ff6b6b"/><path d="M118 66 q8 -4 12 2 q-6 6 -12 -2z" fill="#7bc86c"/><ellipse cx="100" cy="150" rx="44" ry="8" fill="#0a0620" opacity=".6"/><path d="M58 96 Q60 60 100 60 Q140 60 142 96 Z" fill="url(#bd)" stroke="#b06a2c" stroke-width="2"/><g fill="#fff2d8"><circle cx="82" cy="74" r="2.7"/><circle cx="102" cy="68" r="2.7"/><circle cx="120" cy="76" r="2.7"/></g><path d="M52 96 h96 q-3 11 -12 13 h-72 q-9 -2 -12 -13z" fill="#7bc86c"/><path d="M50 112 q50 16 100 0 l1 5 q-51 16 -102 0z" fill="#ffd166"/><rect x="52" y="118" width="96" height="13" rx="6.5" fill="#6b3f23"/><path d="M56 132 h88 q-7 21 -44 21 q-37 0 -44 -21z" fill="url(#bd)" stroke="#b06a2c" stroke-width="2"/></g></svg>`)},
   jelly:{title:'Jelly Jump',tag:'Arcade Seru',desc:'Lompatin si jelly dari platform ke platform.',url:'https://jelly.scottsun.io/',
-    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="bg5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9be7ff"/><stop offset="1" stop-color="#2d6bb5"/></linearGradient><radialGradient id="body5" cx=".38" cy=".3" r=".95"><stop offset="0" stop-color="#ffa8d2"/><stop offset=".45" stop-color="#ff4d9a"/><stop offset="1" stop-color="#c40067"/></radialGradient><radialGradient id="shine5" cx=".4" cy=".32" r=".4"><stop offset="0" stop-color="#fff" stop-opacity=".9"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient></defs><rect width="200" height="200" fill="url(#bg5)"/><g fill="#fff" opacity=".6"><circle cx="40" cy="42" r="4"/><circle cx="164" cy="76" r="5"/><circle cx="128" cy="30" r="3"/><circle cx="176" cy="140" r="3.4"/></g><rect x="116" y="118" width="62" height="13" rx="6.5" fill="#2f9e57"/><rect x="116" y="118" width="62" height="7" rx="3.5" fill="#5fd08a"/><rect x="22" y="158" width="68" height="13" rx="6.5" fill="#2f9e57"/><rect x="22" y="158" width="68" height="7" rx="3.5" fill="#5fd08a"/><ellipse cx="100" cy="152" rx="34" ry="7" fill="#1c4a7a" opacity=".45"/><path d="M64 86 C64 54 136 54 136 86 C136 114 122 132 100 132 C78 132 64 114 64 86 Z" fill="url(#body5)"/><ellipse cx="86" cy="78" rx="14" ry="18" fill="url(#shine5)"/><circle cx="87" cy="88" r="6.5" fill="#fff"/><circle cx="114" cy="88" r="6.5" fill="#fff"/><circle cx="88.6" cy="90" r="3.2" fill="#26122b"/><circle cx="115.6" cy="90" r="3.2" fill="#26122b"/><circle cx="89.6" cy="88.8" r="1.1" fill="#fff"/><circle cx="116.6" cy="88.8" r="1.1" fill="#fff"/><path d="M92 104 q9 9 18 0" stroke="#26122b" stroke-width="3.2" fill="none" stroke-linecap="round"/><ellipse cx="76" cy="100" rx="5" ry="3" fill="#ff8ab8" opacity=".8"/><ellipse cx="124" cy="100" rx="5" ry="3" fill="#ff8ab8" opacity=".8"/><g stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"><line x1="58" y1="40" x2="58" y2="50"/><line x1="53" y1="45" x2="63" y2="45"/><line x1="146" y1="100" x2="146" y2="108"/><line x1="142" y1="104" x2="150" y2="104"/></g></svg>`)}
+    icon:svgToUrl(`<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cj"><rect width="200" height="200" rx="44"/></clipPath><linearGradient id="sj" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a5e9ff"/><stop offset="1" stop-color="#2a63b0"/></linearGradient><radialGradient id="bj" cx=".38" cy=".3" r=".95"><stop offset="0" stop-color="#ffadd4"/><stop offset=".45" stop-color="#ff4d9a"/><stop offset="1" stop-color="#bf0063"/></radialGradient><radialGradient id="hj" cx=".4" cy=".3" r=".42"><stop offset="0" stop-color="#ffffff" stop-opacity=".92"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient></defs><g clip-path="url(#cj)"><rect width="200" height="200" fill="url(#sj)"/><g fill="#ffffff" opacity=".65"><circle cx="38" cy="40" r="4"/><circle cx="166" cy="72" r="5"/><circle cx="130" cy="28" r="3"/><circle cx="178" cy="138" r="3.4"/><circle cx="20" cy="86" r="2.6"/></g><g stroke="#ffffff" stroke-width="3" stroke-linecap="round" opacity=".9"><line x1="60" y1="38" x2="60" y2="48"/><line x1="55" y1="43" x2="65" y2="43"/><line x1="150" y1="98" x2="150" y2="106"/><line x1="146" y1="102" x2="154" y2="102"/></g><rect x="112" y="120" width="64" height="14" rx="7" fill="#2e9e56"/><rect x="112" y="120" width="64" height="7" rx="3.5" fill="#63d68f"/><rect x="24" y="158" width="70" height="14" rx="7" fill="#2e9e56"/><rect x="24" y="158" width="70" height="7" rx="3.5" fill="#63d68f"/><ellipse cx="100" cy="154" rx="36" ry="7" fill="#123a6b" opacity=".4"/><path d="M64 88 C64 56 136 56 136 88 C136 116 122 134 100 134 C78 134 64 116 64 88 Z" fill="url(#bj)"/><ellipse cx="85" cy="80" rx="14" ry="19" fill="url(#hj)"/><circle cx="88" cy="90" r="7" fill="#ffffff"/><circle cx="114" cy="90" r="7" fill="#ffffff"/><circle cx="90" cy="92" r="3.4" fill="#22102b"/><circle cx="116" cy="92" r="3.4" fill="#22102b"/><circle cx="91" cy="90.6" r="1.2" fill="#fff"/><circle cx="117" cy="90.6" r="1.2" fill="#fff"/><path d="M92 106 q9 9 18 0" stroke="#22102b" stroke-width="3.4" fill="none" stroke-linecap="round"/><ellipse cx="74" cy="102" rx="5.5" ry="3.2" fill="#ff8ab8" opacity=".85"/><ellipse cx="126" cy="102" rx="5.5" ry="3.2" fill="#ff8ab8" opacity=".85"/><g stroke="#ffffff" stroke-width="4" stroke-linecap="round" opacity=".7" fill="none"><path d="M56 116 q-6 2 -8 8"/><path d="M146 114 q7 2 9 8"/></g></g></svg>`)}
 };
 let builtinData={},cloudGames=[];
 const builtinOf=id=>({...BUILTIN_DEFAULTS[id],...(builtinData[id]||{})});
@@ -635,7 +702,7 @@ function renderCloud(){
 onSnapshot(query(collection(db,'games'),orderBy('ts','desc'),limit(60)),s=>{cloudGames=s.docs.map(d=>({id:d.id,...d.data()}));renderCloud()},e=>console.warn(e.message));
 function updateCount(){$('#countGames').textContent=(Object.keys(BUILTIN_DEFAULTS).length+cloudGames.length)+' KONTEN'}
 
-/* ===== SOSIAL ===== */
+/* ===== SOSIAL: like, komentar, share (?game=<id>) ===== */
 const heartSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
 const cmtSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
 const shareSVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"/><line x1="15.4" y1="6.5" x2="8.6" y2="10.5"/></svg>';
@@ -774,7 +841,7 @@ function openGame(id){
     launchPlayer(d.title,d.url);
     updateDoc(doc(db,'stats','plays'),{[id]:increment(1)}).catch(()=>{});
   }else{
-    const gm=cloudGames.find(g=>g.id===id);if(!gm)return;
+    const gm=cloudGames.find(g=>g.id===id);if(!gm)return toast('Game tidak ditemukan','err');
     if(gm.type==='code'&&gm.code)launchPlayer(gm.name,URL.createObjectURL(new Blob([gm.code],{type:'text/html'})));
     else{if(!gm.link)return toast('Game belum punya link','err');launchPlayer(gm.name,gm.link)}
     updateDoc(doc(db,'games',gm.id),{plays:increment(1)}).catch(()=>{});
@@ -888,7 +955,7 @@ function fileToDataURL(file,size=256){
 let tmpAv='',adminIcon='';
 function openSettings(){
   if(!firebaseUser)return;
-  $('#setName').value=userDoc?.name||firebaseUser.displayName||'';
+  $('#setName').value=userDoc?.name||'';
   tmpAv=userDoc?.av||'';
   const p=$('#setAvatarPrev');p.textContent='';
   if(tmpAv){const i=new Image();i.src=tmpAv;p.appendChild(i)}else p.textContent='?';
@@ -925,42 +992,32 @@ function loadAdminForm(){
   }catch(e){toast('Gagal simpan: '+(e.code||e.message),'err')}
 };
 
-/* ===== ZING AI — jalur utama /ai (env key) + cadangan Pollinations ===== */
+/* ===== ZING AI — murni Pollinations, tanpa function, tanpa API key ===== */
+const AI_SYS={
+  image:'Kamu Zing AI di portal game Zing. Bahasa Indonesia santai. Bantu pengguna menyusun prompt gambar yang deskriptif dan bagus.',
+  code:'Kamu adalah Zing AI. Buat kode HTML lengkap siap jalan dalam satu blok ```html ... ```. Tanpa placeholder, tanpa API berbayar. Setelah kode, tulis 1-2 kalimat penjelasan.',
+  agent:'Kamu adalah Zing AI Agent. Perbaiki kode pengguna: bug, tampilan, performa HP & PC, fitur yang diminta. SELALU balas dengan file final lengkap dalam satu blok ```html ... ```.'
+};
 async function callAI(messages){
-  try{
-    const r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'chat',messages})});
-    const j=await r.json().catch(()=>null);
-    if(r.ok&&j?.choices?.[0]?.message?.content)return j.choices[0].message.content;
-    throw new Error(j?.error||('HTTP '+r.status));
-  }catch(e){
-    const last=messages[messages.length-1]?.content||'halo';
-    const ctx=messages.slice(0,-1).filter(m=>m.role==='user').map(m=>'- '+m.content).join('\n');
-    const url='https://text.pollinations.ai/'+encodeURIComponent(last+(ctx?'\n\nKonteks:\n'+ctx:''))+'?model=openai&system='+encodeURIComponent(AI_SYS[aiTab]);
-    const r2=await fetch(url);
-    if(!r2.ok)throw new Error('Server utama ('+e.message+') dan cadangan (HTTP '+r2.status+') sama-sama gagal');
-    const c=await r2.text();
-    if(!c||c.trim().length<2)throw new Error('Respons kosong, coba lagi');
-    return c;
-  }
+  const sys=AI_SYS[aiTab];
+  const last=messages[messages.length-1]?.content||'halo';
+  const hist=messages.slice(0,-1).filter(m=>m.role==='user').slice(-3).map(m=>'- '+m.content).join('\n');
+  const prompt=(hist?hist+'\n\nPermintaan:\n':'')+last;
+  const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:sys},{role:'user',content:prompt}]})});
+  if(!r.ok)throw new Error('HTTP '+r.status+' — server AI sedang sibuk, coba lagi 1 menit');
+  const j=await r.json().catch(()=>null);
+  const c=j?.choices?.[0]?.message?.content;
+  if(!c||c.trim().length<2)throw new Error('Respons kosong, coba lagi');
+  return c;
 }
 function callImgUrl(prompt){
-  return 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=768&height=768&nologo=true&seed='+Math.floor(Math.random()*1e6);
-}
-async function primaryImg(prompt){
-  const r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'image',prompt})});
-  const j=await r.json().catch(()=>null);
-  if(!r.ok)throw new Error(j?.error||('HTTP '+r.status));
-  const d=j?.data?.[0];
-  const u=d?.url||(d?.b64_json?'data:image/png;base64,'+d.b64_json:null);
-  if(!u)throw new Error('Respons tanpa gambar');
-  return u;
+  return 'https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=768&height=768&nologo=true&enhance=true&seed='+Math.floor(Math.random()*1e6);
 }
 async function callImg(prompt){
-  try{ return await primaryImg(prompt); }catch(e){}
   const u=callImgUrl(prompt);
   await new Promise((res,rej)=>{
     const i=new Image();
-    const t=setTimeout(()=>rej(new Error('Timeout membuat gambar, coba lagi')),45000);
+    const t=setTimeout(()=>rej(new Error('Timeout membuat gambar, coba lagi')),60000);
     i.onload=()=>{clearTimeout(t);res()};
     i.onerror=()=>{clearTimeout(t);rej(new Error('Gagal membuat gambar, coba prompt lain'))};
     i.src=u;
@@ -968,24 +1025,16 @@ async function callImg(prompt){
   return u;
 }
  $('#aiDiag').onclick=async()=>{
-  toast('Menguji koneksi AI...','ok');
-  let m='Server utama /ai: ';
-  try{const r=await fetch('/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({mode:'chat',messages:[{role:'user',content:'tes'}]})});m+=r.ok?'OK':'HTTP '+r.status}
-  catch(e){m+='belum terpasang'}
-  m+=' | Cadangan: ';
-  try{const r2=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'user',content:'tes'}]})});m+=r2.ok?'OK':'HTTP '+r2.status}
-  catch(e2){m+='gagal'}
-  toast(m);
+  toast('Menguji Zing AI...','ok');
+  try{
+    const r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'user',content:'balas satu kata: ok'}]})});
+    toast(r.ok?'Zing AI terhubung (HTTP '+r.status+')':'Server menolak: HTTP '+r.status,r.ok?'ok':'err');
+  }catch(e){toast('Tidak bisa terhubung: '+e.message,'err')}
 };
 
 let aiTab='image',aiBusy=false,aiHist=[];
 try{aiHist=JSON.parse(localStorage.getItem('zing_ai_hist')||'[]')}catch(e){}
 function saveHist(){try{localStorage.setItem('zing_ai_hist',JSON.stringify(aiHist.slice(-40)))}catch(e){}}
-const AI_SYS={
-  image:'Kamu Zing AI di portal game Zing. Bahasa Indonesia santai. Bantu pengguna menyusun prompt gambar yang deskriptif dan bagus.',
-  code:'Kamu adalah Zing AI. Buat kode HTML lengkap siap jalan dalam satu blok ```html ... ```. Tanpa placeholder, tanpa API berbayar. Setelah kode, tulis 1-2 kalimat penjelasan.',
-  agent:'Kamu adalah Zing AI Agent. Perbaiki kode pengguna: bug, tampilan, performa HP & PC, fitur yang diminta. SELALU balas dengan file final lengkap dalam satu blok ```html ... ```.'
-};
 function openAI(){showWipe('screen-ai');renderAI()}
  $('#btnBackAI').onclick=()=>enterHome();
  $$('.ai-tab').forEach(b=>b.onclick=()=>{aiTab=b.dataset.mode;$$('.ai-tab').forEach(x=>x.classList.toggle('active',x===b));renderAI()});
@@ -1051,7 +1100,7 @@ function renderAI(){
     b.innerHTML=`<div style="margin:auto 0;padding:24px 4px;max-width:460px">
       <div style="display:inline-flex;padding:14px;background:#14271b;border:1px solid #304434;border-radius:20px;margin-bottom:14px">${robotSVG(70)}</div>
       <h3 style="font-family:var(--disp);font-weight:800;font-size:25px;margin-bottom:8px">Zing AI siap membantu</h3>
-      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon game, minta kode game HTML lengkap, atau tempel kodemu di tab Agent dan minta versi yang lebih baik.</p>
+      <p style="color:var(--mut);line-height:1.7">Minta gambar untuk ikon game, minta kode game HTML lengkap, atau tempel kodemu di tab Agent dan minta versi yang lebih baik. Kalau ragu, klik badge BETA di atas untuk mengetes koneksi.</p>
     </div>`;
     return;
   }
